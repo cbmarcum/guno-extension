@@ -31,8 +31,8 @@ repositories {
     
 }
 
-group 'org.openoffice'
-version "0.1.5"
+group 'net.codebuilders'
+version "4.1.6.0" // based on AOO version and patch number
 description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
 mainClassName = 'org.openoffice.FakeClassName'
 
@@ -40,13 +40,14 @@ ext.isReleaseVersion = !version.endsWith("SNAPSHOT") // used to not pgp sign sna
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.5'
-    compile "org.openoffice:juh:4.1.2"
-    compile "org.openoffice:ridl:4.1.2"
-    compile "org.openoffice:unoil:4.1.2"
-    compile "org.openoffice:jurt:4.1.2"
+    compile "net.codebuilders:juh:4.1.6"
+    compile "net.codebuilders:ridl:4.1.6"
+    compile "net.codebuilders:unoil:4.1.6"
+    compile "net.codebuilders:jurt:4.1.6"
     
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-    testCompile 'net.codebuilders:bootstrapconnector:0.1.0'
+    // testCompile 'net.codebuilders:bootstrapconnector:0.1.0'
+    testCompile 'net.codebuilders:bootstrap-connector:4.1.6.0'
 }
 
 groovydoc {
@@ -81,8 +82,8 @@ uploadArchives.repositories.mavenDeployer {
         // url: "https://repository.apache.org/service/local/staging/deploy/maven2/" // Apache Nexus
         // url: "http://oss.sonatype.org/service/local/staging/deploy/maven2/"
         // url: "file://$buildDir/myRepo/" // local build directory
-        repository(url: "https://repository.apache.org/service/local/staging/deploy/maven2/") {
-            authentication(userName: mavenUser, password: mavenPassword)
+        repository(url: "file://$buildDir/myRepo/") {
+            // (userName: mavenUser, password: mavenPassword)
         }
 
         // pom.project
@@ -90,13 +91,16 @@ uploadArchives.repositories.mavenDeployer {
             name 'Groovy UNO Extension API'
             packaging 'jar'
             description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
-            url 'http://openoffice.org'
+            url 'http://codebuilders.net'
             inceptionYear '2016'
 
             scm {
-                url 'http://svn.apache.org/repos/asf/openoffice/devtools/guno-extension/trunk'
-                developerConnection 'https://svn.apache.org/repos/asf/openoffice/devtools/guno-extension/trunk'
-                connection 'http://svn.apache.org/repos/asf/openoffice/devtools/guno-extension/trunk'
+                // url 'http://svn.apache.org/repos/asf/openoffice/devtools/guno-extension/trunk'
+                // developerConnection 'https://svn.apache.org/repos/asf/openoffice/devtools/guno-extension/trunk'
+                // connection 'http://svn.apache.org/repos/asf/openoffice/devtools/guno-extension/trunk'
+                url 'https://github.com/cbmarcum/guno-extension'
+                developerConnection 'https://github.com/cbmarcum/guno-extension'
+                connection 'https://github.com/cbmarcum/guno-extension'
             }
 
             licenses {
@@ -116,6 +120,16 @@ uploadArchives.repositories.mavenDeployer {
                     // organization 'Apache Software Foundation'
                     organization = 'Apache Software Foundation' // <-- note we use assignment here
                     organizationUrl 'http://www.apache.org'
+
+                }
+                developer {
+                    name 'Carl Marcum'
+                    email 'carl.marcum@codebuilders.net'
+                    url 'http://codebuilders.net'
+                    // see: http://www.mail-archive.com/user@gradle.codehaus.org/msg05368.html
+                    // organization 'Code Builders, LLC'
+                    organization = 'Code Builders, LLC' // <-- note we use assignment here
+                    organizationUrl 'http://codebuilders.net'
 
                 }
             }
