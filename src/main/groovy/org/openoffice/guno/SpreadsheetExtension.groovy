@@ -47,15 +47,18 @@ import com.sun.star.sheet.XSpreadsheetDocument
 import com.sun.star.sheet.XSpreadsheets
 import com.sun.star.style.XStyleFamiliesSupplier
 import com.sun.star.table.CellAddress
+import com.sun.star.table.CellContentType
 import com.sun.star.table.CellVertJustify
 import com.sun.star.table.XCell
+import com.sun.star.table.XCellRange
+import com.sun.star.table.XColumnRowRange
+import com.sun.star.table.XTableColumns
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
 import com.sun.star.uno.XInterface
 
 
 class SpreadsheetExtension {
-
 
 
     /** Returns the spreadsheet document with the specified index component context
@@ -185,7 +188,9 @@ class SpreadsheetExtension {
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the string value to insert.
+     * @deprecated As of release 4.1.6.1, replaced by {@link #getFormulaOfCell(final XCellRange self, int column, int row)}
      */
+    @Deprecated
     static void insertFormulaIntoCell(final XSpreadsheet self, int column, int row, String value) {
 
         XCell xCell = null
@@ -198,7 +203,9 @@ class SpreadsheetExtension {
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the float value to insert.
+     * @deprecated As of release 4.1.6.1, replaced by {@link #getValueOfCell(final XCellRange self, int column, int row)}
      */
+    @Deprecated
     static void insertValueIntoCell(final XSpreadsheet self, int column, int row, float value) {
 
         XCell xCell = null
@@ -240,13 +247,110 @@ class SpreadsheetExtension {
         return result
     }
 
+    /* XCellRange methods **************************************/
+
+    /**
+     * Returns the formula string of a cell.
+     * Even if the cell does not contain a formula, an assignment of this attribute's
+     * value to another cell's formula attribute would create the same cell content.
+     * This is because this attribute contains the original text value of a string cell.
+     * The value of a value cell will be formatted using the number format's default
+     * format or the formula string, including "=", of a formula cell.
+     * If called on a Range the column and row is relative to that range.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @return String the formula string of a cell.
+     */
+    static String getFormulaOfCell(final XCellRange self, int column, int row) {
+        XCell xCell = self.getCellByPosition(column, row)
+        String result = xCell.getFormula()
+        return result
+    }
+
+    /**
+     * Inserts a formula (string) value into the cell specified by column and row.
+     * When assigned, the string will be interpreted and a value, text or formula
+     * cell is created, depending on the text and the number format.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @param value the string value to insert.
+     */
+    static void setFormulaOfCell(final XCellRange self, int column, int row, String value) {
+        XCell xCell = self.getCellByPosition(column, row)
+        xCell.setFormula(value)
+    }
+
+    /**
+     * Returns the floating point value of the cell specified by column and row.
+     * For a value cell the value is returned, for a string cell zero is returned
+     * and for a formula cell the result value of a formula is returned.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @return Double value of the cell.
+     */
+    static Double getValueOfCell(final XCellRange self, int column, int row) {
+        XCell xCell = self.getCellByPosition(column, row)
+        Double result = xCell.getValue()
+        return result
+    }
+
+    /**
+     * Inserts a float value into the cell specified by column and row.
+     * After a call to this method the type of the cell is CellContentType.VALUE.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @param value the float value to insert.
+     */
+    static void setValueOfCell(final XCellRange self, int column, int row, float value) {
+        XCell xCell = self.getCellByPosition(column, row)
+        xCell.setValue((new Float(value)).floatValue())
+    }
+
+    /**
+     * Returns the type of the cell.
+     * CellContentType.EMPTY, VALUE, TEXT, or FORMULA
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @return CellContentType the content type of the cell.
+     */
+    static CellContentType getTypeOfCell(final XCellRange self, int column, int row) {
+        XCell xCell = self.getCellByPosition(column, row)
+        CellContentType result = xCell.getType()
+        return result
+    }
+
+    /**
+     * Sets the width of the columns in XCellRange to optimal plus the additional width
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @param addWidth additional width in 1/100th of a millimeter
+     */
+    static void setColumnWidthOptimalPlus(final XCellRange self, int column, int row, int addWidth) {
+        XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
+        XTableColumns xColumns = xColRowRange.columns
+
+        while (xColumns.haselements()) {
+            int i = 0
+            Object colX = xColumns.getByIndex(i)
+            XPropertySet colPS = colX.guno(XPropertySet.class)
+            colPS.putAt("OptimalWidth", true)
+            int colWidth = colPS.getAt("Width")
+            colPS.putAt("Width", colWidth + addWidth)
+        }
+
+    }
 
 
     // XCellRange method for getPropertySet
     // maybe try XPropertySet.getPropertySet (class self)
 
     // TEST
-
 
 
     /* XCell methods *********************************************************/
