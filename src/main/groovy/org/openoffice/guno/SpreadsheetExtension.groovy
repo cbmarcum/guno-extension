@@ -331,12 +331,11 @@ class SpreadsheetExtension {
      * @param row zero based row position.
      * @param addWidth additional width in 1/100th of a millimeter
      */
-    static void setColumnWidthOptimalPlus(final XCellRange self, int column, int row, int addWidth) {
+    static void setColumnWidthOptimalPlus(final XCellRange self, int addWidth) {
         XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
         XTableColumns xColumns = xColRowRange.columns
 
-        while (xColumns.haselements()) {
-            int i = 0
+        (0..xColumns.getCount()-1).each { i ->
             Object colX = xColumns.getByIndex(i)
             XPropertySet colPS = colX.guno(XPropertySet.class)
             colPS.putAt("OptimalWidth", true)
