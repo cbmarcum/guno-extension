@@ -53,6 +53,7 @@ import com.sun.star.table.XCell
 import com.sun.star.table.XCellRange
 import com.sun.star.table.XColumnRowRange
 import com.sun.star.table.XTableColumns
+import com.sun.star.table.XTableRows
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
 import com.sun.star.uno.XInterface
@@ -300,7 +301,7 @@ class SpreadsheetExtension {
     /**
      * Inserts a float value into the cell specified by column and row.
      * After a call to this method the type of the cell is CellContentType.VALUE.
-     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet.
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the float value to insert.
@@ -312,8 +313,8 @@ class SpreadsheetExtension {
 
     /**
      * Returns the type of the cell.
-     * CellContentType.EMPTY, VALUE, TEXT, or FORMULA
-     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * CellContentType.EMPTY, VALUE, TEXT, or FORMULA.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet.
      * @param column zero based column position.
      * @param row zero based row position.
      * @return CellContentType the content type of the cell.
@@ -325,11 +326,11 @@ class SpreadsheetExtension {
     }
 
     /**
-     * Sets the width of the columns in XCellRange to optimal plus the additional width
-     * @param self XCellRange, XSheetCellRange, or XSpreadsheet
+     * Sets the width of the columns in XCellRange to optimal plus the additional width.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet.
      * @param column zero based column position.
      * @param row zero based row position.
-     * @param addWidth additional width in 1/100th of a millimeter
+     * @param addWidth additional width in 1/100th of a millimeter.
      */
     static void setColumnWidthOptimalPlus(final XCellRange self, int addWidth) {
         XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
@@ -341,6 +342,27 @@ class SpreadsheetExtension {
             colPS.putAt("OptimalWidth", true)
             int colWidth = colPS.getAt("Width")
             colPS.putAt("Width", colWidth + addWidth)
+        }
+
+    }
+
+    /**
+     * Sets the height of the columns in XCellRange to optimal plus the additional height.
+     * @param self XCellRange, XSheetCellRange, or XSpreadsheet.
+     * @param column zero based column position.
+     * @param row zero based row position.
+     * @param addHeight additional height in 1/100th of a millimeter.
+     */
+    static void setColumnHeightOptimalPlus(final XCellRange self, int addHeight) {
+        XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
+        XTableRows xRows = xColRowRange.rows
+
+        (0..xRows.getCount()-1).each { i ->
+            Object rowX = xRows.getByIndex(i)
+            XPropertySet rowPS = rowX.guno(XPropertySet.class)
+            rowPS.putAt("OptimalHeight", true)
+            int rowHeight = rowPS.getAt("Height")
+            rowPS.putAt("Height", rowHeight + addHeight)
         }
 
     }
