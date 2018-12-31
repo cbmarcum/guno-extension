@@ -347,13 +347,13 @@ class SpreadsheetExtension {
     }
 
     /**
-     * Sets the height of the columns in XCellRange to optimal plus the additional height.
+     * Sets the height of the rows in XCellRange to optimal plus the additional height.
      * @param self XCellRange, XSheetCellRange, or XSpreadsheet.
      * @param column zero based column position.
      * @param row zero based row position.
      * @param addHeight additional height in 1/100th of a millimeter.
      */
-    static void setColumnHeightOptimalPlus(final XCellRange self, int addHeight) {
+    static void setRowHeightOptimalPlus(final XCellRange self, int addHeight) {
         XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
         XTableRows xRows = xColRowRange.rows
 
