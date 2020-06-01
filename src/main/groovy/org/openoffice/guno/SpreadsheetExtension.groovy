@@ -22,42 +22,21 @@
 
 package org.openoffice.guno
 
-/**
- *
- * @author Carl Marcum - CodeBuilders.net
- */
-
 import com.sun.star.beans.XPropertySet
-import com.sun.star.container.ElementExistException
-import com.sun.star.container.XEnumeration
-import com.sun.star.container.XEnumerationAccess
-import com.sun.star.container.XIndexAccess
-import com.sun.star.container.XNameAccess
-import com.sun.star.container.XNameContainer
-import com.sun.star.frame.XComponentLoader
+import com.sun.star.container.*
 import com.sun.star.lang.XComponent
 import com.sun.star.lang.XMultiServiceFactory
-import com.sun.star.lang.XMultiComponentFactory
-import com.sun.star.sheet.XCellAddressable
-import com.sun.star.sheet.XCellRangesQuery
-import com.sun.star.sheet.XSheetCellRangeContainer
-import com.sun.star.sheet.XSheetCellRanges
-import com.sun.star.sheet.XSpreadsheet
-import com.sun.star.sheet.XSpreadsheetDocument
-import com.sun.star.sheet.XSpreadsheets
+import com.sun.star.sheet.*
 import com.sun.star.style.XStyleFamiliesSupplier
-import com.sun.star.table.CellAddress
-import com.sun.star.table.CellContentType
-import com.sun.star.table.CellVertJustify
-import com.sun.star.table.XCell
-import com.sun.star.table.XCellRange
-import com.sun.star.table.XColumnRowRange
-import com.sun.star.table.XTableColumns
-import com.sun.star.table.XTableRows
+import com.sun.star.table.*
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
 import com.sun.star.uno.XInterface
 
+/**
+ *
+ * @author Carl Marcum - Code Builders, LLC
+ */
 
 class SpreadsheetExtension {
 
@@ -336,7 +315,7 @@ class SpreadsheetExtension {
         XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
         XTableColumns xColumns = xColRowRange.columns
 
-        (0..xColumns.getCount()-1).each { i ->
+        (0..xColumns.getCount() - 1).each { i ->
             Object colX = xColumns.getByIndex(i)
             XPropertySet colPS = colX.guno(XPropertySet.class)
             colPS.putAt("OptimalWidth", true)
@@ -357,7 +336,7 @@ class SpreadsheetExtension {
         XColumnRowRange xColRowRange = self.guno(XColumnRowRange.class)
         XTableRows xRows = xColRowRange.rows
 
-        (0..xRows.getCount()-1).each { i ->
+        (0..xRows.getCount() - 1).each { i ->
             Object rowX = xRows.getByIndex(i)
             XPropertySet rowPS = rowX.guno(XPropertySet.class)
             rowPS.putAt("OptimalHeight", true)

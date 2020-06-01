@@ -22,17 +22,20 @@
 
 package org.openoffice.guno
 
-/**
- *
- * @author Carl Marcum - CodeBuilders.net
- */
-
+import com.sun.star.awt.*
 import com.sun.star.beans.XPropertySet
 import com.sun.star.container.XIndexAccess
 import com.sun.star.frame.XComponentLoader
+import com.sun.star.frame.XDesktop
+import com.sun.star.frame.XFrame
 import com.sun.star.lang.XMultiComponentFactory
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
+
+/**
+ *
+ * @author Carl Marcum - Code Builders, LLC
+ */
 
 class UnoExtension {
 
@@ -52,6 +55,59 @@ class UnoExtension {
 
         return aLoader
     }
+
+    /**
+     * Returns a message box.
+     * @param type the type of message box.
+     * @param buttons represents the button combinations and optionally a default button added together.
+     * @param message the message for the message box.
+     * @return XMessageBox interface.
+     */
+    static XMessageBox getMessageBox(final XComponentContext self, MessageBoxType type, Integer buttons, String message) {
+
+        XMultiComponentFactory xMCF = self.getServiceManager()
+        XDesktop xDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", self)
+        XFrame xFrame = xDesktop.getCurrentFrame()
+        Object oToolkit = xMCF.createInstanceWithContext("com.sun.star.awt.Toolkit", self)
+        XMessageBoxFactory xMessageBoxFactory = UnoRuntime.queryInterface(XMessageBoxFactory.class, oToolkit)
+        XWindow xWindow = xFrame.getContainerWindow()
+        XWindowPeer xWindowPeer = UnoRuntime.queryInterface(XWindowPeer.class, xWindow)
+        String title = "soffice"
+        XMessageBox xMessageBox = xMessageBoxFactory.createMessageBox(
+                xWindowPeer,
+                type,
+                buttons,
+                title,
+                message)
+        return xMessageBox
+    }
+
+    /**
+     * Returns a message box.
+     * @param type the type of message box.
+     * @param buttons represents the button combinations and optionally a default button added together.
+     * @param message the message for the message box.
+     * @param title the title of the message box.
+     * @return XMessageBox interface.
+     */
+    static XMessageBox getMessageBox(final XComponentContext self, MessageBoxType type, Integer buttons, String message, String title) {
+
+        XMultiComponentFactory xMCF = self.getServiceManager()
+        XDesktop xDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", self)
+        XFrame xFrame = xDesktop.getCurrentFrame()
+        Object oToolkit = xMCF.createInstanceWithContext("com.sun.star.awt.Toolkit", self)
+        XMessageBoxFactory xMessageBoxFactory = UnoRuntime.queryInterface(XMessageBoxFactory.class, oToolkit)
+        XWindow xWindow = xFrame.getContainerWindow()
+        XWindowPeer xWindowPeer = UnoRuntime.queryInterface(XWindowPeer.class, xWindow)
+        XMessageBox xMessageBox = xMessageBoxFactory.createMessageBox(
+                xWindowPeer,
+                type,
+                buttons,
+                title,
+                message)
+        return xMessageBox
+    }
+
 
     /**
      * Returns the queried object.
