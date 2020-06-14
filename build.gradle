@@ -20,6 +20,12 @@
  * 
  *************************************************************/
 
+/* build with:
+* ./gradlew publish
+* or:
+* ./gradlew publishToMavenLocal
+ */
+
 plugins {
     id 'groovy'
     id 'application'
@@ -32,12 +38,12 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
-    mavenLocal()
+    // mavenLocal()
 
 }
 
 group 'net.codebuilders'
-version "4.1.6.11" // based on AOO version and patch number
+version "4.1.6.12" // based on AOO version and patch number
 description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
 mainClassName = 'org.openoffice.FakeClassName'
 
@@ -74,7 +80,6 @@ archivesBaseName = 'guno-extension'
 java {
     withJavadocJar()
     withSourcesJar()
-
 }
 
 
@@ -133,8 +138,8 @@ publishing {
 
             }
         }
-
     }
+
     repositories {
         maven {
             // change URLs to point to your repos, e.g. http://my.org/repo
@@ -193,4 +198,3 @@ artifacts {
     // archives groovydocJar
     archives javadocJar
 }
-
