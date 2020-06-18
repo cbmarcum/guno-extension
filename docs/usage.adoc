@@ -1,0 +1,39 @@
+= Usage
+
+The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
+
+=== Get an XComponentLoader
+
+Java way (assumes XComponentContext xComponentContext reference)
+[source,java]
+----
+XMultiComponentFactory mxRemoteServiceManager = null
+    XComponentLoader aLoader = null
+    mxRemoteServiceManager = xComponentContext.getServiceManager()
+    aLoader = UnoRuntime.queryInterface(
+        XComponentLoader.class, mxRemoteServiceManager.createInstanceWithContext(
+        "com.sun.star.frame.Desktop", self))
+----
+
+Groovy Extension way
+[source,java]
+----
+XComponentLoader aLoader = mxRemoteContext.componentLoader
+----
+
+=== UnoRuntime.queryInterface
+The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.
+Java way (assumes we have a reference to XSpreadsheetDocument myDoc..)
+[source,]
+----
+XSpreadsheets xSheets = myDoc.getSheets() ;
+XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
+xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));
+----
+
+Groovy Extension way [source,java]
+----
+XSpreadsheets xSheets = myDoc.sheets
+XIndexAccess oIndexSheets = xSheets.guno(XIndexAccess.class)
+xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)
+----
