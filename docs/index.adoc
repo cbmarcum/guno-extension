@@ -1,6 +1,10 @@
 = GUNO Extension Documentation
+:author: Carl Marcum
+:email: carl.marcum@codebuilders.net
+:toc: left
 
 == Introduction
+
 UNO stands for Universal Network Objects and is the base component technology for Apache OpenOffice.
 
 GUNO stands for Groovy UNO and is an Apache Groovy language extension of the Java UNO API's. The artifact of this extension is a Java jar file that when used in a Groovy script or class adds convenience methods to the regular Java UNO API's.

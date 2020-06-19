@@ -5,6 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.8.dev">
+<meta name="author" content="Carl Marcum">
 <title>Usage</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -436,20 +437,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>Usage</h1>
+<div class="details">
+<span id="author" class="author">Carl Marcum</span><br>
+<span id="email" class="email"><a href="mailto:carl.marcum@codebuilders.net">carl.marcum@codebuilders.net</a></span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#truepreface">Preface</a></li>
+<li><a href="#trueget-an-xcomponentloader">Get an XComponentLoader</a></li>
+<li><a href="#trueunoruntime-queryinterface">UnoRuntime.queryInterface</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="truepreface"><a class="anchor" href="#truepreface"></a>Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The best way to explain the differences between the Java UNO API&#8217;s and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.</p>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="trueget-an-xcomponentloader"><a class="anchor" href="#trueget-an-xcomponentloader"></a>Get an XComponentLoader</h3>
+<div class="sect1">
+<h2 id="trueget-an-xcomponentloader"><a class="anchor" href="#trueget-an-xcomponentloader"></a>Get an XComponentLoader</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Java way (assumes XComponentContext xComponentContext reference)</p>
 </div>
@@ -472,8 +487,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="trueunoruntime-queryinterface"><a class="anchor" href="#trueunoruntime-queryinterface"></a>UnoRuntime.queryInterface</h3>
+</div>
+<div class="sect1">
+<h2 id="trueunoruntime-queryinterface"><a class="anchor" href="#trueunoruntime-queryinterface"></a>UnoRuntime.queryInterface</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.
 Java way (assumes we have a reference to XSpreadsheetDocument myDoc..)</p>
@@ -497,9 +514,10 @@ xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</pre>
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-18 19:08:16 -0400
+Last updated 2020-06-19 19:29:08 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

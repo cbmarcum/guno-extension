@@ -1,8 +1,12 @@
 = Usage
+:author: Carl Marcum
+:email: carl.marcum@codebuilders.net
+:toc: left
 
+== Preface
 The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
 
-=== Get an XComponentLoader
+== Get an XComponentLoader
 
 Java way (assumes XComponentContext xComponentContext reference)
 [source,java]
@@ -21,7 +25,7 @@ Groovy Extension way
 XComponentLoader aLoader = mxRemoteContext.componentLoader
 ----
 
-=== UnoRuntime.queryInterface
+== UnoRuntime.queryInterface
 The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.
 Java way (assumes we have a reference to XSpreadsheetDocument myDoc..)
 [source,]
