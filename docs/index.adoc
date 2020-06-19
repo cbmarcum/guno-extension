@@ -5,27 +5,24 @@
 
 == Introduction
 
-UNO stands for Universal Network Objects and is the base component technology for Apache OpenOffice.
+*UNO* stands for *Universal Network Objects* and is the base component technology for **Apache OpenOffice**.
 
-GUNO stands for Groovy UNO and is an Apache Groovy language extension of the Java UNO API's. The artifact of this extension is a Java jar file that when used in a Groovy script or class adds convenience methods to the regular Java UNO API's.
+*GUNO* stands for *Groovy UNO* and is an *Apache Groovy* language extension of the **Java UNO API's**. The artifact of this extension is a Java jar file that when used in a Groovy script or class adds convenience methods to the regular Java UNO API's.
 
-The goal of the Groovy UNO Extension is to allow UNO programming that is less verbose than using the Java UNO API's alone.
+*The goal of the Groovy UNO Extension is to allow UNO programming that is less verbose than using the Java UNO API's alone.*
 
-These methods are implemented using Groovy Extension Modules. An extension module allows you to add new methods to existing classes, including classes which are precompiled, like classes from the JDK or in this case Java UNO classes. These new methods, unlike those defined through a metaclass or using a category, are available globally.
+These methods are implemented using **Groovy Extension Modules**. An extension module allows you to **add new methods to existing classes**, including classes which are precompiled, like classes from the JDK or in this case Java UNO classes. These new methods, unlike those defined through a metaclass or using a category, are available globally.
 
 Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API's and future work will be on enhancing the other applications.
 
 == Usage
-:author: Carl Marcum
-:email: carl.marcum@codebuilders.net
-:toc: left
 
-=== Preface
 The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
 
 === Get an XComponentLoader
 
-Java way (assumes XComponentContext xComponentContext reference)
+*Java Example* (assumes XComponentContext xComponentContext reference)
+
 [source,java]
 ----
 XMultiComponentFactory mxRemoteServiceManager = null
@@ -36,23 +33,29 @@ XMultiComponentFactory mxRemoteServiceManager = null
         "com.sun.star.frame.Desktop", self))
 ----
 
-Groovy Extension way
+*Groovy Extension Example*
+
 [source,java]
 ----
 XComponentLoader aLoader = mxRemoteContext.componentLoader
 ----
 
 === UnoRuntime.queryInterface
+
 The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.
-Java way (assumes we have a reference to XSpreadsheetDocument myDoc..)
-[source,]
+
+*Java Example* (assumes we have a reference to XSpreadsheetDocument myDoc..)
+
+[source,java]
 ----
 XSpreadsheets xSheets = myDoc.getSheets() ;
 XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
 xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));
 ----
 
-Groovy Extension way [source,java]
+*Groovy Extension Example*
+
+[source,java]
 ----
 XSpreadsheets xSheets = myDoc.sheets
 XIndexAccess oIndexSheets = xSheets.guno(XIndexAccess.class)

@@ -450,7 +450,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#trueintroduction">Introduction</a></li>
 <li><a href="#trueusage">Usage</a>
 <ul class="sectlevel2">
-<li><a href="#truepreface">Preface</a></li>
 <li><a href="#trueget-an-xcomponentloader">Get an XComponentLoader</a></li>
 <li><a href="#trueunoruntime-queryinterface">UnoRuntime.queryInterface</a></li>
 </ul>
@@ -463,16 +462,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="trueintroduction"><a class="anchor" href="#trueintroduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>UNO stands for Universal Network Objects and is the base component technology for Apache OpenOffice.</p>
+<p><strong>UNO</strong> stands for <strong>Universal Network Objects</strong> and is the base component technology for <strong>Apache OpenOffice</strong>.</p>
 </div>
 <div class="paragraph">
-<p>GUNO stands for Groovy UNO and is an Apache Groovy language extension of the Java UNO API&#8217;s. The artifact of this extension is a Java jar file that when used in a Groovy script or class adds convenience methods to the regular Java UNO API&#8217;s.</p>
+<p><strong>GUNO</strong> stands for <strong>Groovy UNO</strong> and is an <strong>Apache Groovy</strong> language extension of the <strong>Java UNO API&#8217;s</strong>. The artifact of this extension is a Java jar file that when used in a Groovy script or class adds convenience methods to the regular Java UNO API&#8217;s.</p>
 </div>
 <div class="paragraph">
-<p>The goal of the Groovy UNO Extension is to allow UNO programming that is less verbose than using the Java UNO API&#8217;s alone.</p>
+<p><strong>The goal of the Groovy UNO Extension is to allow UNO programming that is less verbose than using the Java UNO API&#8217;s alone.</strong></p>
 </div>
 <div class="paragraph">
-<p>These methods are implemented using Groovy Extension Modules. An extension module allows you to add new methods to existing classes, including classes which are precompiled, like classes from the JDK or in this case Java UNO classes. These new methods, unlike those defined through a metaclass or using a category, are available globally.</p>
+<p>These methods are implemented using <strong>Groovy Extension Modules</strong>. An extension module allows you to <strong>add new methods to existing classes</strong>, including classes which are precompiled, like classes from the JDK or in this case Java UNO classes. These new methods, unlike those defined through a metaclass or using a category, are available globally.</p>
 </div>
 <div class="paragraph">
 <p>Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API&#8217;s and future work will be on enhancing the other applications.</p>
@@ -482,16 +481,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="trueusage"><a class="anchor" href="#trueusage"></a>Usage</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="truepreface"><a class="anchor" href="#truepreface"></a>Preface</h3>
 <div class="paragraph">
 <p>The best way to explain the differences between the Java UNO API&#8217;s and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="trueget-an-xcomponentloader"><a class="anchor" href="#trueget-an-xcomponentloader"></a>Get an XComponentLoader</h3>
 <div class="paragraph">
-<p>Java way (assumes XComponentContext xComponentContext reference)</p>
+<p><strong>Java Example</strong> (assumes XComponentContext xComponentContext reference)</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -504,7 +500,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>Groovy Extension way</p>
+<p><strong>Groovy Extension Example</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -515,24 +511,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="trueunoruntime-queryinterface"><a class="anchor" href="#trueunoruntime-queryinterface"></a>UnoRuntime.queryInterface</h3>
 <div class="paragraph">
-<p>The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.
-Java way (assumes we have a reference to XSpreadsheetDocument myDoc..)</p>
+<p>The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.</p>
+</div>
+<div class="paragraph">
+<p><strong>Java Example</strong> (assumes we have a reference to XSpreadsheetDocument myDoc..)</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">XSpreadsheets xSheets = myDoc.getSheets() ;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.getSheets() ;
 XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
 xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Groovy Extension way [source,java]</p>
+<p><strong>Groovy Extension Example</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>XSpreadsheets xSheets = myDoc.sheets
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.sheets
 XIndexAccess oIndexSheets = xSheets.guno(XIndexAccess.class)
-xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</pre>
+xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</code></pre>
 </div>
 </div>
 </div>
@@ -541,7 +539,7 @@ xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-19 19:37:37 -0400
+Last updated 2020-06-19 19:54:51 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
