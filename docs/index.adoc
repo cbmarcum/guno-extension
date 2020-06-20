@@ -15,7 +15,18 @@ These methods are implemented using **Groovy Extension Modules**. An extension m
 
 Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API's and future work will be on enhancing the other applications.
 
-== Usage
+== Getting the Extension
+
+In a Groovy Script...
+
+Gradle project...
+
+Maven project...
+
+Apache OpenOffice macro...
+
+
+== Using the Extension
 
 The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
 
@@ -61,3 +72,42 @@ XSpreadsheets xSheets = myDoc.sheets
 XIndexAccess oIndexSheets = xSheets.guno(XIndexAccess.class)
 xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)
 ----
+
+=== Property Access
+
+*getPropertyValue()* and *setPropertyValue()* methods can now be *getAt()* and *putAt()*.
+
+
+=== Spreadsheet Index and Cells
+
+Get the first sheet in the spreadsheet document and insert data into a cell****
+
+The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument myDoc..
+
+*Java Example*
+[source,java]
+----
+XSpreadsheets xSheets = myDoc.getSheets();
+XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(
+    XIndexAccess.class, xSheets);
+xSheet = (XSpreadsheet) UnoRuntime.queryInterface(
+   XSpreadsheet.class, oIndexSheets.getByIndex(0));
+xCell = xSheet.getCellByPosition(1,0);
+xCell.setFormula("Sample");
+----
+
+*Groovy Extension Example*
+
+[source,java]
+----
+XSpreadsheet xSheet = myDoc.getSheetByIndex(0)
+xSheet.setTextToCell(1,0,"Sample")
+----
+
+Using Groovy without the extension allows removing the Interface cast on the right side and not using semi-colons. +
+The following examples are in that style and other than that, similar to the Java way.
+
+=== Setting the Cell Style property
+
+The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)
+Without Extension 
