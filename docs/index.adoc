@@ -15,6 +15,8 @@ These methods are implemented using **Groovy Extension Modules**. An extension m
 
 Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API's and future work will be on enhancing the other applications.
 
+This guide is not meant to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.
+
 == Getting the Extension
 
 In a Groovy Script...
@@ -110,4 +112,140 @@ The following examples are in that style and other than that, similar to the Jav
 === Setting the Cell Style property
 
 The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)
-Without Extension 
+
+*Without Extension *
+
+[source,java]
+----
+XPropertySet xCellProps = UnoRuntime.queryInterface(XPropertySet.class, xCell)
+xCellProps.setPropertyValue("CellStyle", "Result")
+----
+
+*With extension*
+
+[source,java]
+----
+xCell.cellStyle = "Result"
+----
+
+=== Using Enum Types
+
+The extension adds getter and setter methods for CellVertJustify allowing what looks like property access to vertJustify.
+
+*Without Extension*
+
+[source,java]
+----
+xCellProps.setPropertyValue("VertJustify", com.sun.star.table.CellVertJustify.TOP)
+----
+
+*With Extension*
+
+[source,java]
+----
+xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP
+----
+
+=== Setting The Active Sheet
+
+*Without Extension* but using SpreadsheetDocHelper.groovy included with the  https://wiki.openoffice.org/wiki/OpenOffice_Gradle_Integration[OpenOffice Gradle Integration] aoo-client template. 
+
+[source,java]
+----
+XModel xSpreadsheetModel = sdHelper.getModel()
+XController xSpreadsheetController = xSpreadsheetModel.getCurrentController()
+XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView.class, xSpreadsheetController)
+xSpreadsheetView.setActiveSheet(xSpreadsheet)
+----
+
+*With Extension* and a SpreadsheetDocHelper.groovy method to get the XSpreadsheetView directly 
+
+[source,java]
+----
+XSpreadsheetView xSpreadsheetView = sdHelper.getSpreadsheetView()
+xSpreadsheetView.setActiveSheet(xSpreadsheet)
+----
+
+=== Get Cell Ranges
+
+*Without Extension*
+
+[source,java]
+----
+XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
+XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((short)CellFlags.FORMULA)
+----
+
+*With Extension*
+
+[source,java]
+----
+XSheetCellRanges xFormulaCells = xSpreadsheet.getCellRanges(CellFlags.FORMULA)
+----
+
+=== Use of XEnumerationAccess
+
+*Without Extension* we get an Enumeration and use it iterate through Cells 
+
+[source,java]
+----
+XEnumerationAccess xFormulas = xFormulaCells.getCells()
+XEnumeration xFormulaEnum = xFormulas.createEnumeration()
+while (xFormulaEnum.hasMoreElements()) {
+    Object formulaCell = xFormulaEnum.nextElement()
+    xCell = UnoRuntime.queryInterface(XCell.class, formulaCell)
+    XCellAddressable xCellAddress = UnoRuntime.queryInterface(XCellAddressable.class, xCell)
+    println("Formula cell in column " +
+        xCellAddress.getCellAddress().Column + ", row " + xCellAddress.getCellAddress().Row
+        + " contains " + xCell.getFormula())
+}
+----
+
+*With Extension* we can use a List provided by a new method and a closure to iterate through each cell.
+
+[source,java]
+----
+XCell[] cellList = xFormulaCells.cellList
+cellList.each() {println("Formula cell in column ${it.address.Column}, " + 
+    "row ${it.address.Row} contains ${it.formula}")
+}
+----
+
+=== RangeContainer
+Example: Create a new cell range container, add all cells that are filled, and iterate through them.
+
+*Without Extension*
+
+[source,java]
+----
+com.sun.star.lang.XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
+    com.sun.star.lang.XMultiServiceFactory.class, xSpreadsheetDocument)
+com.sun.star.sheet.XSheetCellRangeContainer xRangeCont = UnoRuntime.queryInterface(
+    com.sun.star.sheet.XSheetCellRangeContainer.class,
+    xDocFactory.createInstance("com.sun.star.sheet.SheetCellRanges"));
+xRangeCont.addRangeAddresses(xCellRanges.rangeAddresses, false)
+print("All filled cells: ")
+com.sun.star.container.XEnumerationAccess xCellsEA = xRangeCont.getCells()
+com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()          
+while (xEnum.hasMoreElements()) {
+    Object aCellObj = xEnum.nextElement()
+    com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(
+        com.sun.star.sheet.XCellAddressable.class, aCellObj)
+    com.sun.star.table.CellAddress aAddr = xAddr.getCellAddress()
+    println(sdHelper.getCellAddressString(aAddr.Column, aAddr.Row) + " ")
+}
+----
+
+*With Extension*
+
+[source,java]
+----
+XSheetCellRangeContainer xRangeCont = xSpreadsheetDocument.rangeContainer
+XSheetCellRanges xCellRanges = xSpreadsheet.getCellRanges(1023)
+XCell[] cellList2 = xRangeCont.cellList
+print("All filled cells: ")
+cellList2.each() {println("Formula cell in column ${it.address.Column}, " + 
+    "row ${it.address.Row} contains ${it.formula}")
+}
+----
+

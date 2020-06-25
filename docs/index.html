@@ -456,6 +456,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#trueproperty-access">Property Access</a></li>
 <li><a href="#truespreadsheet-index-and-cells">Spreadsheet Index and Cells</a></li>
 <li><a href="#truesetting-the-cell-style-property">Setting the Cell Style property</a></li>
+<li><a href="#trueusing-enum-types">Using Enum Types</a></li>
+<li><a href="#truesetting-the-active-sheet">Setting The Active Sheet</a></li>
+<li><a href="#trueget-cell-ranges">Get Cell Ranges</a></li>
+<li><a href="#trueuse-of-xenumerationaccess">Use of XEnumerationAccess</a></li>
+<li><a href="#truerangecontainer">RangeContainer</a></li>
 </ul>
 </li>
 </ul>
@@ -479,6 +484,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API&#8217;s and future work will be on enhancing the other applications.</p>
+</div>
+<div class="paragraph">
+<p>This guide is not meant to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.</p>
 </div>
 </div>
 </div>
@@ -600,8 +608,163 @@ The following examples are in that style and other than that, similar to the Jav
 <div class="sect2">
 <h3 id="truesetting-the-cell-style-property"><a class="anchor" href="#truesetting-the-cell-style-property"></a>Setting the Cell Style property</h3>
 <div class="paragraph">
-<p>The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)
-Without Extension</p>
+<p>The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)</p>
+</div>
+<div class="paragraph">
+<p>*Without Extension *</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XPropertySet xCellProps = UnoRuntime.queryInterface(XPropertySet.class, xCell)
+xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCell.cellStyle = "Result"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueusing-enum-types"><a class="anchor" href="#trueusing-enum-types"></a>Using Enum Types</h3>
+<div class="paragraph">
+<p>The extension adds getter and setter methods for CellVertJustify allowing what looks like property access to vertJustify.</p>
+</div>
+<div class="paragraph">
+<p><strong>Without Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCellProps.setPropertyValue("VertJustify", com.sun.star.table.CellVertJustify.TOP)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="truesetting-the-active-sheet"><a class="anchor" href="#truesetting-the-active-sheet"></a>Setting The Active Sheet</h3>
+<div class="paragraph">
+<p><strong>Without Extension</strong> but using SpreadsheetDocHelper.groovy included with the  <a href="https://wiki.openoffice.org/wiki/OpenOffice_Gradle_Integration">OpenOffice Gradle Integration</a> aoo-client template.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XModel xSpreadsheetModel = sdHelper.getModel()
+XController xSpreadsheetController = xSpreadsheetModel.getCurrentController()
+XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView.class, xSpreadsheetController)
+xSpreadsheetView.setActiveSheet(xSpreadsheet)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong> and a SpreadsheetDocHelper.groovy method to get the XSpreadsheetView directly</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheetView xSpreadsheetView = sdHelper.getSpreadsheetView()
+xSpreadsheetView.setActiveSheet(xSpreadsheet)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueget-cell-ranges"><a class="anchor" href="#trueget-cell-ranges"></a>Get Cell Ranges</h3>
+<div class="paragraph">
+<p><strong>Without Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
+XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((short)CellFlags.FORMULA)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSheetCellRanges xFormulaCells = xSpreadsheet.getCellRanges(CellFlags.FORMULA)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueuse-of-xenumerationaccess"><a class="anchor" href="#trueuse-of-xenumerationaccess"></a>Use of XEnumerationAccess</h3>
+<div class="paragraph">
+<p><strong>Without Extension</strong> we get an Enumeration and use it iterate through Cells</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XEnumerationAccess xFormulas = xFormulaCells.getCells()
+XEnumeration xFormulaEnum = xFormulas.createEnumeration()
+while (xFormulaEnum.hasMoreElements()) {
+    Object formulaCell = xFormulaEnum.nextElement()
+    xCell = UnoRuntime.queryInterface(XCell.class, formulaCell)
+    XCellAddressable xCellAddress = UnoRuntime.queryInterface(XCellAddressable.class, xCell)
+    println("Formula cell in column " +
+        xCellAddress.getCellAddress().Column + ", row " + xCellAddress.getCellAddress().Row
+        + " contains " + xCell.getFormula())
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong> we can use a List provided by a new method and a closure to iterate through each cell.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XCell[] cellList = xFormulaCells.cellList
+cellList.each() {println("Formula cell in column ${it.address.Column}, " +
+    "row ${it.address.Row} contains ${it.formula}")
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="truerangecontainer"><a class="anchor" href="#truerangecontainer"></a>RangeContainer</h3>
+<div class="paragraph">
+<p>Example: Create a new cell range container, add all cells that are filled, and iterate through them.</p>
+</div>
+<div class="paragraph">
+<p><strong>Without Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">com.sun.star.lang.XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
+    com.sun.star.lang.XMultiServiceFactory.class, xSpreadsheetDocument)
+com.sun.star.sheet.XSheetCellRangeContainer xRangeCont = UnoRuntime.queryInterface(
+    com.sun.star.sheet.XSheetCellRangeContainer.class,
+    xDocFactory.createInstance("com.sun.star.sheet.SheetCellRanges"));
+xRangeCont.addRangeAddresses(xCellRanges.rangeAddresses, false)
+print("All filled cells: ")
+com.sun.star.container.XEnumerationAccess xCellsEA = xRangeCont.getCells()
+com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()
+while (xEnum.hasMoreElements()) {
+    Object aCellObj = xEnum.nextElement()
+    com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(
+        com.sun.star.sheet.XCellAddressable.class, aCellObj)
+    com.sun.star.table.CellAddress aAddr = xAddr.getCellAddress()
+    println(sdHelper.getCellAddressString(aAddr.Column, aAddr.Row) + " ")
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSheetCellRangeContainer xRangeCont = xSpreadsheetDocument.rangeContainer
+XSheetCellRanges xCellRanges = xSpreadsheet.getCellRanges(1023)
+XCell[] cellList2 = xRangeCont.cellList
+print("All filled cells: ")
+cellList2.each() {println("Formula cell in column ${it.address.Column}, " +
+    "row ${it.address.Row} contains ${it.formula}")
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -609,7 +772,7 @@ Without Extension</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-19 20:52:37 -0400
+Last updated 2020-06-25 19:02:39 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
