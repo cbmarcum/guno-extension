@@ -4,7 +4,6 @@
 :toc: left
 
 == Introduction
-
 *UNO* stands for *Universal Network Objects* and is the base component technology for **Apache OpenOffice**.
 
 *GUNO* stands for *Groovy UNO* and is an *Apache Groovy* language extension of the **Java UNO API's**. The artifact of this extension is a Java jar file that when used in a Groovy script or class adds convenience methods to the regular Java UNO API's.
@@ -15,28 +14,80 @@ These methods are implemented using **Groovy Extension Modules**. An extension m
 
 Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API's and future work will be on enhancing the other applications.
 
-This guide is not meant to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.
+This guide is not intended to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.
 
 == Getting the Extension
+Projects that build using dependencies from artifact repositories like Apache Maven, JCenter, etc. just need to include
+the latest version as a dependency in the build file or POM.
 
-In a Groovy Script...
+Gradle Projects
+[source, groovy]
+----
+compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.12'
+----
 
-Gradle project...
+Maven Projects
+[source, xml]
+----
+<dependency>
+    <groupId>net.codebuilders</groupId>
+    <artifactId>guno-extension</artifactId>
+    <version>4.1.6.12</version>
+</dependency>
+----
 
-Maven project...
+Groovy scripts can declare a Grab dependency at the beginning before import statements.
+[source, groovy]
+----
+@Grapes(
+    @Grab(group='net.codebuilders', module='guno-extension', version='4.1.6.12')
+)
+----
 
-Apache OpenOffice macro...
+Apache OpenOffice macros written in Groovy do not need to include a dependency as the guno-extension jar file is packaged
+with the openoffice-groovy extension.
 
+== Groovy Syntax
+There are many advantages to using the Groovy language over pure Java and most can be found in the
+http://groovy-lang.org/documentation.html[Apache Groovy documentation].
+A few things we'll point out here are while Java requires us to cast an Object to a type like when using the queryInterface
+method, Groovy does the casting automatically. We also don't need line-ending semicolons.
+
+[source, java]
+----
+XIndexAccess xIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
+----
+
+[source, groovy]
+----
+XIndexAccess xIndexSheets = UnoRuntime.queryInterface(XIndexAccess.class, xSheets)
+----
+
+While Groovy works great as a dynamic language where we can declare variables with the *def* keyword, I prefer to declare
+types most of the time. This is only my preference and not a requirement.
+When Object properties have getter and setter methods to use, Groovy allows what appears to be property access while actually
+using the get and set methods at compile time.
+
+Java
+[source,java]
+----
+XSpreadsheets xSheets = myDoc.getSheets();
+----
+Groovy
+[source,groovy]
+----
+XSpreadsheets xSheets = myDoc.sheets
+----
 
 == Using the Extension
-
 The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
 
 === Get an XComponentLoader
+One of the first objects we need in AOO development  after we bootstrap the office and acquire an XComponentContext is an
+XComponentLoader we can use to load a document. This requires a few steps as shown:
 
-*Java Example* (assumes XComponentContext xComponentContext reference)
-
-[source,java]
+*Groovy* (begins with a XComponentContext *xComponentContext* reference)
+[source,groovy]
 ----
 XMultiComponentFactory mxRemoteServiceManager = null
     XComponentLoader aLoader = null
@@ -46,28 +97,31 @@ XMultiComponentFactory mxRemoteServiceManager = null
         "com.sun.star.frame.Desktop", self))
 ----
 
-*Groovy Extension Example*
+The GUNO Extension adds a convenience method *getComponentLoader()* to the XComponentContext class to return an XComponentLoader object.
 
-[source,java]
+*GUNO Extension* (same *xComponentContext* reference)
+
+[source,groovy]
 ----
-XComponentLoader aLoader = mxRemoteContext.componentLoader
+XComponentLoader aLoader = xComponentContext.componentLoader
 ----
 
 === UnoRuntime.queryInterface
+A staple of OpenOffice development with Java is the static UnoRuntime.queryInterface() method that is used to get one
+Interface reference from another within the same Service object. The UNO concepts of Services and Intefaces are beyond
+the scope of this guide, but you can get more information in the AOO Development Guide.
 
 The UnoRuntime.queryInterface(ReturnObject.class, FromObject) method can be replaced with the new FromObject.guno(ReturnObject.class) method.
 
-*Java Example* (assumes we have a reference to XSpreadsheetDocument myDoc..)
-
+*Java* (assumes we have a reference to XSpreadsheetDocument myDoc..)
 [source,java]
 ----
-XSpreadsheets xSheets = myDoc.getSheets() ;
+XSpreadsheets xSheets = myDoc.getSheets();
 XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
 xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));
 ----
 
-*Groovy Extension Example*
-
+*GUNO Extension*
 [source,java]
 ----
 XSpreadsheets xSheets = myDoc.sheets
@@ -76,9 +130,31 @@ xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)
 ----
 
 === Property Access
+An UNO object must offer its properties through interfaces that allow you to work with properties. The most basic form
+of these interfaces is the interface com.sun.star.beans.XPropertySet .
 
-*getPropertyValue()* and *setPropertyValue()* methods can now be *getAt()* and *putAt()*.
+In XPropertySet, two methods carry out the property access, *getPropertyValue(String propertyName)* and
+*setPropertyValue(String propertyName, Object propertyValue)*.
 
+The GUNO Extension adds the methods *getAt(String propertyName)* and *putAt(String propertyName, Object propertyValue)*
+to the XPropertySet class.
+
+Example: Set the CellStyle of a spreadsheet Cell *xCell*.
+
+*Java*
+[source,java]
+----
+XPropertySet xCellProps = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, xCell);
+xCellProps.setPropertyValue("CellStyle", "Result");
+----
+
+*GUNO Extension*
+[source,groovy]
+----
+XPropertySet xCellProps = xCell.guno(XPropertySet.class)
+xCell.putAt("CellStyle", "Result")
+----
+See below for an even faster method to set Cell Properties.
 
 === Spreadsheet Index and Cells
 
@@ -98,9 +174,8 @@ xCell = xSheet.getCellByPosition(1,0);
 xCell.setFormula("Sample");
 ----
 
-*Groovy Extension Example*
-
-[source,java]
+*GUNO Extension*
+[source,groovy]
 ----
 XSpreadsheet xSheet = myDoc.getSheetByIndex(0)
 xSheet.setTextToCell(1,0,"Sample")
@@ -113,7 +188,7 @@ The following examples are in that style and other than that, similar to the Jav
 
 The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)
 
-*Without Extension *
+*Without Extension*
 
 [source,java]
 ----
@@ -122,7 +197,6 @@ xCellProps.setPropertyValue("CellStyle", "Result")
 ----
 
 *With extension*
-
 [source,java]
 ----
 xCell.cellStyle = "Result"
