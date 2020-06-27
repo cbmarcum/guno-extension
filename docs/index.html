@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.8.dev">
 <meta name="author" content="Carl Marcum">
 <title>GUNO Extension Documentation</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -241,7 +241,7 @@ table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;pad
 pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
 pre.pygments .lineno::before{content:"";margin-right:-.125em}
 .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
-.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
 .quoteblock blockquote{margin:0;padding:0;border:0}
 .quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
@@ -258,8 +258,7 @@ pre.pygments .lineno::before{content:"";margin-right:-.125em}
 .quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
 .quoteblock.abstract{margin:0 1em 1.25em;display:block}
 .quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
-.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
-.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin:0 0 1.25em;padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
 .quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
 .quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
 table.tableblock{max-width:100%;border-collapse:separate}
@@ -436,6 +435,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
@@ -447,21 +447,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_getting_the_extension">Getting the Extension</a></li>
-<li><a href="#_groovy_syntax">Groovy Syntax</a></li>
-<li><a href="#_using_the_extension">Using the Extension</a>
+<li><a href="#trueintroduction">Introduction</a></li>
+<li><a href="#truegetting-the-extension">Getting the Extension</a></li>
+<li><a href="#truegroovy-syntax">Groovy Syntax</a></li>
+<li><a href="#trueusing-the-extension">Using the Extension</a>
 <ul class="sectlevel2">
-<li><a href="#_get_an_xcomponentloader">Get an XComponentLoader</a></li>
-<li><a href="#_unoruntime_queryinterface">UnoRuntime.queryInterface</a></li>
-<li><a href="#_property_access">Property Access</a></li>
-<li><a href="#_spreadsheet_index_and_cells">Spreadsheet Index and Cells</a></li>
-<li><a href="#_setting_the_cell_style_property">Setting the Cell Style property</a></li>
-<li><a href="#_using_enum_types">Using Enum Types</a></li>
-<li><a href="#_setting_the_active_sheet">Setting The Active Sheet</a></li>
-<li><a href="#_get_cell_ranges">Get Cell Ranges</a></li>
-<li><a href="#_use_of_xenumerationaccess">Use of XEnumerationAccess</a></li>
-<li><a href="#_rangecontainer">RangeContainer</a></li>
+<li><a href="#trueget-an-xcomponentloader">Get an XComponentLoader</a></li>
+<li><a href="#trueunoruntime-queryinterface">UnoRuntime.queryInterface</a></li>
+<li><a href="#trueproperty-access">Property Access</a></li>
+<li><a href="#truespreadsheet-index-and-cells">Spreadsheet Index and Cells</a></li>
+<li><a href="#truesetting-the-cell-style-property">Setting the Cell Style property</a></li>
+<li><a href="#trueusing-enum-types">Using Enum Types</a></li>
+<li><a href="#truesetting-the-active-sheet">Setting The Active Sheet</a></li>
+<li><a href="#trueget-cell-ranges">Get Cell Ranges</a></li>
+<li><a href="#trueuse-of-xenumerationaccess">Use of XEnumerationAccess</a></li>
+<li><a href="#truerangecontainer">RangeContainer</a></li>
 </ul>
 </li>
 </ul>
@@ -469,7 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_introduction">Introduction</h2>
+<h2 id="trueintroduction"><a class="anchor" href="#trueintroduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>UNO</strong> stands for <strong>Universal Network Objects</strong> and is the base component technology for <strong>Apache OpenOffice</strong>.</p>
@@ -492,7 +492,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_getting_the_extension">Getting the Extension</h2>
+<h2 id="truegetting-the-extension"><a class="anchor" href="#truegetting-the-extension"></a>Getting the Extension</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Projects that build using dependencies from artifact repositories like Apache Maven, JCenter, etc. just need to include
@@ -503,7 +503,7 @@ the latest version as a dependency in the build file or POM.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile <span style="color:#606">group</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net.codebuilders</span><span style="color:#710">'</span></span>, <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">guno-extension</span><span style="color:#710">'</span></span>, <span style="color:#606">version</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">4.1.6.12</span><span style="color:#710">'</span></span></code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.12'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -511,11 +511,11 @@ the latest version as a dependency in the build file or POM.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span style="color:#070;font-weight:bold">&lt;dependency&gt;</span>
-    <span style="color:#070;font-weight:bold">&lt;groupId&gt;</span>net.codebuilders<span style="color:#070;font-weight:bold">&lt;/groupId&gt;</span>
-    <span style="color:#070;font-weight:bold">&lt;artifactId&gt;</span>guno-extension<span style="color:#070;font-weight:bold">&lt;/artifactId&gt;</span>
-    <span style="color:#070;font-weight:bold">&lt;version&gt;</span>4.1.6.12<span style="color:#070;font-weight:bold">&lt;/version&gt;</span>
-<span style="color:#070;font-weight:bold">&lt;/dependency&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
+    &lt;groupId&gt;net.codebuilders&lt;/groupId&gt;
+    &lt;artifactId&gt;guno-extension&lt;/artifactId&gt;
+    &lt;version&gt;4.1.6.12&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -523,8 +523,8 @@ the latest version as a dependency in the build file or POM.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span style="color:#007">@Grapes</span>(
-    <span style="color:#007">@Grab</span>(group=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">net.codebuilders</span><span style="color:#710">'</span></span>, module=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">guno-extension</span><span style="color:#710">'</span></span>, version=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">4.1.6.12</span><span style="color:#710">'</span></span>)
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">@Grapes(
+    @Grab(group='net.codebuilders', module='guno-extension', version='4.1.6.12')
 )</code></pre>
 </div>
 </div>
@@ -535,7 +535,7 @@ with the openoffice-groovy extension.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_groovy_syntax">Groovy Syntax</h2>
+<h2 id="truegroovy-syntax"><a class="anchor" href="#truegroovy-syntax"></a>Groovy Syntax</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>There are many advantages to using the Groovy language over pure Java and most can be found in the
@@ -545,12 +545,12 @@ method, Groovy does the casting automatically. We also don&#8217;t need line-end
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XIndexAccess xIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XIndexAccess xIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">XIndexAccess xIndexSheets = UnoRuntime.queryInterface(XIndexAccess.class, xSheets)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XIndexAccess xIndexSheets = UnoRuntime.queryInterface(XIndexAccess.class, xSheets)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -564,7 +564,7 @@ using the get and set methods at compile time.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSpreadsheets xSheets = myDoc.getSheets();</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.getSheets();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -572,19 +572,19 @@ using the get and set methods at compile time.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">XSpreadsheets xSheets = myDoc.sheets</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XSpreadsheets xSheets = myDoc.sheets</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_using_the_extension">Using the Extension</h2>
+<h2 id="trueusing-the-extension"><a class="anchor" href="#trueusing-the-extension"></a>Using the Extension</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The best way to explain the differences between the Java UNO API&#8217;s and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.</p>
 </div>
 <div class="sect2">
-<h3 id="_get_an_xcomponentloader">Get an XComponentLoader</h3>
+<h3 id="trueget-an-xcomponentloader"><a class="anchor" href="#trueget-an-xcomponentloader"></a>Get an XComponentLoader</h3>
 <div class="paragraph">
 <p>One of the first objects we need in AOO development  after we bootstrap the office and acquire an XComponentContext is an
 XComponentLoader we can use to load a document. This requires a few steps as shown:</p>
@@ -594,12 +594,12 @@ XComponentLoader we can use to load a document. This requires a few steps as sho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">XMultiComponentFactory mxRemoteServiceManager = <span style="color:#069">null</span>
-    XComponentLoader aLoader = <span style="color:#069">null</span>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XMultiComponentFactory mxRemoteServiceManager = null
+    XComponentLoader aLoader = null
     mxRemoteServiceManager = xComponentContext.getServiceManager()
     aLoader = UnoRuntime.queryInterface(
         XComponentLoader.class, mxRemoteServiceManager.createInstanceWithContext(
-        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">com.sun.star.frame.Desktop</span><span style="color:#710">&quot;</span></span>, self))</code></pre>
+        "com.sun.star.frame.Desktop", self))</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -610,12 +610,12 @@ XComponentLoader we can use to load a document. This requires a few steps as sho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">XComponentLoader aLoader = xComponentContext.componentLoader</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XComponentLoader aLoader = xComponentContext.componentLoader</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_unoruntime_queryinterface">UnoRuntime.queryInterface</h3>
+<h3 id="trueunoruntime-queryinterface"><a class="anchor" href="#trueunoruntime-queryinterface"></a>UnoRuntime.queryInterface</h3>
 <div class="paragraph">
 <p>A staple of OpenOffice development with Java is the static UnoRuntime.queryInterface() method that is used to get one
 Interface reference from another within the same Service object. The UNO concepts of Services and Intefaces are beyond
@@ -629,9 +629,9 @@ the scope of this guide, but you can get more information in the AOO Development
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSpreadsheets xSheets = myDoc.getSheets();
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.getSheets();
 XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
-xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(<span style="color:#00D">0</span>));</code></pre>
+xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -639,14 +639,14 @@ xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexShee
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSpreadsheets xSheets = myDoc.sheets
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.sheets
 XIndexAccess oIndexSheets = xSheets.guno(XIndexAccess.class)
-xSheet = oIndexSheets.getByIndex(<span style="color:#00D">0</span>).guno(XSpreadsheet.class)</code></pre>
+xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_property_access">Property Access</h3>
+<h3 id="trueproperty-access"><a class="anchor" href="#trueproperty-access"></a>Property Access</h3>
 <div class="paragraph">
 <p>An UNO object must offer its properties through interfaces that allow you to work with properties. The most basic form
 of these interfaces is the interface com.sun.star.beans.XPropertySet .</p>
@@ -667,8 +667,8 @@ to the XPropertySet class.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XPropertySet xCellProps = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, xCell);
-xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">CellStyle</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Result</span><span style="color:#710">&quot;</span></span>);</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XPropertySet xCellProps = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, xCell);
+xCellProps.setPropertyValue("CellStyle", "Result");</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -676,8 +676,8 @@ xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">XPropertySet xCellProps = xCell.guno(XPropertySet.class)
-xCell.putAt(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">CellStyle</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Result</span><span style="color:#710">&quot;</span></span>)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XPropertySet xCellProps = xCell.guno(XPropertySet.class)
+xCell.putAt("CellStyle", "Result")</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -685,7 +685,7 @@ xCell.putAt(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="co
 </div>
 </div>
 <div class="sect2">
-<h3 id="_spreadsheet_index_and_cells">Spreadsheet Index and Cells</h3>
+<h3 id="truespreadsheet-index-and-cells"><a class="anchor" href="#truespreadsheet-index-and-cells"></a>Spreadsheet Index and Cells</h3>
 <div class="paragraph">
 <p>Get the first sheet in the spreadsheet document and insert data into a cell*<strong>*</strong></p>
 </div>
@@ -697,13 +697,13 @@ xCell.putAt(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSpreadsheets xSheets = myDoc.getSheets();
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.getSheets();
 XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(
     XIndexAccess.class, xSheets);
 xSheet = (XSpreadsheet) UnoRuntime.queryInterface(
-   XSpreadsheet.class, oIndexSheets.getByIndex(<span style="color:#00D">0</span>));
-xCell = xSheet.getCellByPosition(<span style="color:#00D">1</span>,<span style="color:#00D">0</span>);
-xCell.setFormula(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sample</span><span style="color:#710">&quot;</span></span>);</code></pre>
+   XSpreadsheet.class, oIndexSheets.getByIndex(0));
+xCell = xSheet.getCellByPosition(1,0);
+xCell.setFormula("Sample");</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -711,8 +711,8 @@ xCell.setFormula(<span style="background-color:hsla(0,100%,50%,0.05)"><span styl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">XSpreadsheet xSheet = myDoc.getSheetByIndex(<span style="color:#00D">0</span>)
-xSheet.setTextToCell(<span style="color:#00D">1</span>,<span style="color:#00D">0</span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sample</span><span style="color:#710">&quot;</span></span>)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XSpreadsheet xSheet = myDoc.getSheetByIndex(0)
+xSheet.setTextToCell(1,0,"Sample")</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -721,7 +721,7 @@ The following examples are in that style and other than that, similar to the Jav
 </div>
 </div>
 <div class="sect2">
-<h3 id="_setting_the_cell_style_property">Setting the Cell Style property</h3>
+<h3 id="truesetting-the-cell-style-property"><a class="anchor" href="#truesetting-the-cell-style-property"></a>Setting the Cell Style property</h3>
 <div class="paragraph">
 <p>The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)</p>
 </div>
@@ -730,8 +730,8 @@ The following examples are in that style and other than that, similar to the Jav
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XPropertySet xCellProps = UnoRuntime.queryInterface(XPropertySet.class, xCell)
-xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">CellStyle</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Result</span><span style="color:#710">&quot;</span></span>)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XPropertySet xCellProps = UnoRuntime.queryInterface(XPropertySet.class, xCell)
+xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -739,12 +739,12 @@ xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">xCell.cellStyle = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Result</span><span style="color:#710">&quot;</span></span></code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCell.cellStyle = "Result"</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_using_enum_types">Using Enum Types</h3>
+<h3 id="trueusing-enum-types"><a class="anchor" href="#trueusing-enum-types"></a>Using Enum Types</h3>
 <div class="paragraph">
 <p>The extension adds getter and setter methods for CellVertJustify allowing what looks like property access to vertJustify.</p>
 </div>
@@ -753,7 +753,7 @@ xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">VertJustify</span><span style="color:#710">&quot;</span></span>, com.sun.star.table.CellVertJustify.TOP)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCellProps.setPropertyValue("VertJustify", com.sun.star.table.CellVertJustify.TOP)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -761,18 +761,18 @@ xCellProps.setPropertyValue(<span style="background-color:hsla(0,100%,50%,0.05)"
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_setting_the_active_sheet">Setting The Active Sheet</h3>
+<h3 id="truesetting-the-active-sheet"><a class="anchor" href="#truesetting-the-active-sheet"></a>Setting The Active Sheet</h3>
 <div class="paragraph">
 <p><strong>Without Extension</strong> but using SpreadsheetDocHelper.groovy included with the  <a href="https://wiki.openoffice.org/wiki/OpenOffice_Gradle_Integration">OpenOffice Gradle Integration</a> aoo-client template.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XModel xSpreadsheetModel = sdHelper.getModel()
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XModel xSpreadsheetModel = sdHelper.getModel()
 XController xSpreadsheetController = xSpreadsheetModel.getCurrentController()
 XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView.class, xSpreadsheetController)
 xSpreadsheetView.setActiveSheet(xSpreadsheet)</code></pre>
@@ -783,20 +783,20 @@ xSpreadsheetView.setActiveSheet(xSpreadsheet)</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSpreadsheetView xSpreadsheetView = sdHelper.getSpreadsheetView()
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheetView xSpreadsheetView = sdHelper.getSpreadsheetView()
 xSpreadsheetView.setActiveSheet(xSpreadsheet)</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_get_cell_ranges">Get Cell Ranges</h3>
+<h3 id="trueget-cell-ranges"><a class="anchor" href="#trueget-cell-ranges"></a>Get Cell Ranges</h3>
 <div class="paragraph">
 <p><strong>Without Extension</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
-XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((<span style="color:#339;font-weight:bold">short</span>)CellFlags.FORMULA)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
+XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((short)CellFlags.FORMULA)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -804,26 +804,26 @@ XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((<span style="colo
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSheetCellRanges xFormulaCells = xSpreadsheet.getCellRanges(CellFlags.FORMULA)</code></pre>
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSheetCellRanges xFormulaCells = xSpreadsheet.getCellRanges(CellFlags.FORMULA)</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_of_xenumerationaccess">Use of XEnumerationAccess</h3>
+<h3 id="trueuse-of-xenumerationaccess"><a class="anchor" href="#trueuse-of-xenumerationaccess"></a>Use of XEnumerationAccess</h3>
 <div class="paragraph">
 <p><strong>Without Extension</strong> we get an Enumeration and use it iterate through Cells</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XEnumerationAccess xFormulas = xFormulaCells.getCells()
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XEnumerationAccess xFormulas = xFormulaCells.getCells()
 XEnumeration xFormulaEnum = xFormulas.createEnumeration()
-<span style="color:#080;font-weight:bold">while</span> (xFormulaEnum.hasMoreElements()) {
-    <span style="color:#0a8;font-weight:bold">Object</span> formulaCell = xFormulaEnum.nextElement()
+while (xFormulaEnum.hasMoreElements()) {
+    Object formulaCell = xFormulaEnum.nextElement()
     xCell = UnoRuntime.queryInterface(XCell.class, formulaCell)
     XCellAddressable xCellAddress = UnoRuntime.queryInterface(XCellAddressable.class, xCell)
-    println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Formula cell in column </span><span style="color:#710">&quot;</span></span> +
-        xCellAddress.getCellAddress().Column + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">, row </span><span style="color:#710">&quot;</span></span> + xCellAddress.getCellAddress().Row
-        + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> contains </span><span style="color:#710">&quot;</span></span> + xCell.getFormula())
+    println("Formula cell in column " +
+        xCellAddress.getCellAddress().Column + ", row " + xCellAddress.getCellAddress().Row
+        + " contains " + xCell.getFormula())
 }</code></pre>
 </div>
 </div>
@@ -832,15 +832,15 @@ XEnumeration xFormulaEnum = xFormulas.createEnumeration()
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XCell<span style="color:#339;font-weight:bold">[]</span> cellList = xFormulaCells.cellList
-cellList.each() {println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Formula cell in column ${it.address.Column}, </span><span style="color:#710">&quot;</span></span> +
-    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">row ${it.address.Row} contains ${it.formula}</span><span style="color:#710">&quot;</span></span>)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XCell[] cellList = xFormulaCells.cellList
+cellList.each() {println("Formula cell in column ${it.address.Column}, " +
+    "row ${it.address.Row} contains ${it.formula}")
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_rangecontainer">RangeContainer</h3>
+<h3 id="truerangecontainer"><a class="anchor" href="#truerangecontainer"></a>RangeContainer</h3>
 <div class="paragraph">
 <p>Example: Create a new cell range container, add all cells that are filled, and iterate through them.</p>
 </div>
@@ -849,21 +849,21 @@ cellList.each() {println(<span style="background-color:hsla(0,100%,50%,0.05)"><s
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">com.sun.star.lang.XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">com.sun.star.lang.XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
     com.sun.star.lang.XMultiServiceFactory.class, xSpreadsheetDocument)
 com.sun.star.sheet.XSheetCellRangeContainer xRangeCont = UnoRuntime.queryInterface(
     com.sun.star.sheet.XSheetCellRangeContainer.class,
-    xDocFactory.createInstance(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">com.sun.star.sheet.SheetCellRanges</span><span style="color:#710">&quot;</span></span>));
-xRangeCont.addRangeAddresses(xCellRanges.rangeAddresses, <span style="color:#069">false</span>)
-print(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">All filled cells: </span><span style="color:#710">&quot;</span></span>)
+    xDocFactory.createInstance("com.sun.star.sheet.SheetCellRanges"));
+xRangeCont.addRangeAddresses(xCellRanges.rangeAddresses, false)
+print("All filled cells: ")
 com.sun.star.container.XEnumerationAccess xCellsEA = xRangeCont.getCells()
 com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()
-<span style="color:#080;font-weight:bold">while</span> (xEnum.hasMoreElements()) {
-    <span style="color:#0a8;font-weight:bold">Object</span> aCellObj = xEnum.nextElement()
+while (xEnum.hasMoreElements()) {
+    Object aCellObj = xEnum.nextElement()
     com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(
         com.sun.star.sheet.XCellAddressable.class, aCellObj)
     com.sun.star.table.CellAddress aAddr = xAddr.getCellAddress()
-    println(sdHelper.getCellAddressString(aAddr.Column, aAddr.Row) + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> </span><span style="color:#710">&quot;</span></span>)
+    println(sdHelper.getCellAddressString(aAddr.Column, aAddr.Row) + " ")
 }</code></pre>
 </div>
 </div>
@@ -872,12 +872,12 @@ com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">XSheetCellRangeContainer xRangeCont = xSpreadsheetDocument.rangeContainer
-XSheetCellRanges xCellRanges = xSpreadsheet.getCellRanges(<span style="color:#00D">1023</span>)
-XCell<span style="color:#339;font-weight:bold">[]</span> cellList2 = xRangeCont.cellList
-print(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">All filled cells: </span><span style="color:#710">&quot;</span></span>)
-cellList2.each() {println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Formula cell in column ${it.address.Column}, </span><span style="color:#710">&quot;</span></span> +
-    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">row ${it.address.Row} contains ${it.formula}</span><span style="color:#710">&quot;</span></span>)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSheetCellRangeContainer xRangeCont = xSpreadsheetDocument.rangeContainer
+XSheetCellRanges xCellRanges = xSpreadsheet.getCellRanges(1023)
+XCell[] cellList2 = xRangeCont.cellList
+print("All filled cells: ")
+cellList2.each() {println("Formula cell in column ${it.address.Column}, " +
+    "row ${it.address.Row} contains ${it.formula}")
 }</code></pre>
 </div>
 </div>
@@ -887,8 +887,11 @@ cellList2.each() {println(<span style="background-color:hsla(0,100%,50%,0.05)"><
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-27 16:30:46 -0400
+Last updated 2020-06-27 18:43:44 -0400
 </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
 </body>
 </html>
