@@ -18,7 +18,7 @@ on enhancing the other applications.
 Background
 ------
 This project's home was originally the Apache OpenOffice Subversion repository in the developer tools area and 
-original documentation is on the OpenOffice wiki [Groovy UNO Extension] [1].
+original documentation is on the OpenOffice wiki [Groovy UNO Extension][1].
 
 Current development work by the author and issue tracking are now here and documentation is on the [GUNO Documentation page][2].
 
