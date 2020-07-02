@@ -23,9 +23,9 @@ Projects that build using dependencies from artifact repositories like Apache Ma
 the latest version as a dependency in the build file or POM.
 
 === Gradle Projects
-[source, groovy]
+[source, gradle]
 ----
-compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.12'
+compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.13'
 ----
 
 === Maven Projects
@@ -34,7 +34,7 @@ compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.12'
 <dependency>
     <groupId>net.codebuilders</groupId>
     <artifactId>guno-extension</artifactId>
-    <version>4.1.6.12</version>
+    <version>4.1.6.13</version>
 </dependency>
 ----
 
@@ -43,7 +43,7 @@ Groovy scripts can declare a Grab dependency at the beginning before import stat
 [source, groovy]
 ----
 @Grapes(
-    @Grab(group='net.codebuilders', module='guno-extension', version='4.1.6.12')
+    @Grab(group='net.codebuilders', module='guno-extension', version='4.1.6.13')
 )
 ----
 
@@ -144,13 +144,15 @@ xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)
 An UNO object must offer its properties through interfaces that allow you to work with properties. The most basic form
 of these interfaces is the interface com.sun.star.beans.XPropertySet .
 
-In XPropertySet, two methods carry out the property access, _getPropertyValue(String propertyName)_ and
-_setPropertyValue(String propertyName, Object propertyValue)_.
+In XPropertySet, two methods carry out the property access: + 
+_Object getPropertyValue(String propertyName)_ + 
+_void setPropertyValue(String propertyName, Object propertyValue)_ + 
 
-The GUNO Extension adds the methods _getAt(String propertyName)_ and _putAt(String propertyName, Object propertyValue)_
-to the XPropertySet class.
+The GUNO Extension adds two special methods to XPropertySet: + 
+_Object getAt(String propertyName)_ + 
+_void putAt(String propertyName, Object propertyValue)_ + 
 
-Example: Set the CellStyle of a spreadsheet Cell *xCell*.
+Example: Set the CellStyle of a spreadsheet Cell _xCell_.
 
 *Java*
 [source,java]
@@ -166,8 +168,9 @@ XPropertySet xCellProps = xCell.guno(XPropertySet.class)
 xCellProps.putAt("CellStyle", "Result")
 ----
 
-By adding _getAt()_ and _putAt()_ methods to XPropertySet we can now access the properties using http://groovy-lang.org/operators.html#subscript-operator[Groovy Subscript Operator] notation. This can Get or Set properties depending on which side of the assigment it's on.
+These special methods allow a shorthand version to getAt and PutAt using  http://groovy-lang.org/operators.html#subscript-operator[Groovy Subscript Operator] notation. This can Get or Set properties depending on which side of the assigment it's on.
 
+*GUNO Extension* using Subscript operator for assignment.
 [source,groovy]
 ----
 xCellProps["CellStyle"] = "Result"
@@ -176,7 +179,10 @@ xCellProps["CellStyle"] = "Result"
 See below for an even faster method to set Cell Properties.
 
 === Spreadsheet By Index and Name
-The GUNO Extension adds a _getSheetByIndex(Integer nIndex)_ method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a _getSheetByName(String name)_ method added also.
+The GUNO Extension adds a method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a method that uses the sheet name. + 
+_XSpreadsheet getSheetByIndex(Integer nIndex)_ + 
+_XSpreadsheet getSheetByName(String name)_
+
 
 The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument _myDoc_
 
@@ -221,9 +227,13 @@ xCellText.setString("Quotation")
 xSpreadsheet.setFormulaOfCell(2,2, "Quotation")
 ----
 
-=== Setting the Cell Style property
+=== Cell Style
 
-The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)
+The extension adds getter and setter methods for CellStyle to XCell + 
+_Object getCellStyle()_ + 
+_void setCellStyle(Object value)_ + 
+allowing what looks like property access to the CellStyle property. +
+To set the cell style to "Result":
 
 *Without Extension*
 
@@ -239,9 +249,19 @@ xCellProps.setPropertyValue("CellStyle", "Result")
 xCell.cellStyle = "Result"
 ----
 
-=== Using Enum Types
+To get the style as a String:
 
-The extension adds getter and setter methods for CellVertJustify allowing what looks like property access to vertJustify.
+*With Extension*
+[source, groovy]
+----
+String style = xCell.cellStyle
+----
+
+=== CellVertJustify Enum
+
+The extension adds getter and setter methods to XCell allowing what looks like property access to vertJustify and use the CellVertJustify enum types.
+_Integer getVertJustify()_ + 
+_void setVertJustify(Object value)_
 
 *Without Extension*
 

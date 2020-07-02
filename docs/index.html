@@ -465,8 +465,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#trueproperty-access">Property Access</a></li>
 <li><a href="#truespreadsheet-by-index-and-name">Spreadsheet By Index and Name</a></li>
 <li><a href="#truecell-contents">Cell Contents</a></li>
-<li><a href="#truesetting-the-cell-style-property">Setting the Cell Style property</a></li>
-<li><a href="#trueusing-enum-types">Using Enum Types</a></li>
+<li><a href="#truecell-style">Cell Style</a></li>
+<li><a href="#truecellvertjustify-enum">CellVertJustify Enum</a></li>
 <li><a href="#truesetting-the-active-sheet">Setting The Active Sheet</a></li>
 <li><a href="#trueget-cell-ranges">Get Cell Ranges</a></li>
 <li><a href="#trueuse-of-xenumerationaccess">Use of XEnumerationAccess</a></li>
@@ -514,7 +514,7 @@ the latest version as a dependency in the build file or POM.</p>
 <h3 id="truegradle-projects"><a class="anchor" href="#truegradle-projects"></a>Gradle Projects</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.12'</code></pre>
+<pre class="highlightjs highlight"><code data-lang="gradle" class="language-gradle hljs">compile group: 'net.codebuilders', name: 'guno-extension', version: '4.1.6.13'</code></pre>
 </div>
 </div>
 </div>
@@ -525,7 +525,7 @@ the latest version as a dependency in the build file or POM.</p>
 <pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
     &lt;groupId&gt;net.codebuilders&lt;/groupId&gt;
     &lt;artifactId&gt;guno-extension&lt;/artifactId&gt;
-    &lt;version&gt;4.1.6.12&lt;/version&gt;
+    &lt;version&gt;4.1.6.13&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -538,7 +538,7 @@ the latest version as a dependency in the build file or POM.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">@Grapes(
-    @Grab(group='net.codebuilders', module='guno-extension', version='4.1.6.12')
+    @Grab(group='net.codebuilders', module='guno-extension', version='4.1.6.13')
 )</code></pre>
 </div>
 </div>
@@ -686,15 +686,17 @@ xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</code></pre>
 of these interfaces is the interface com.sun.star.beans.XPropertySet .</p>
 </div>
 <div class="paragraph">
-<p>In XPropertySet, two methods carry out the property access, <em>getPropertyValue(String propertyName)</em> and
-<em>setPropertyValue(String propertyName, Object propertyValue)</em>.</p>
+<p>In XPropertySet, two methods carry out the property access:<br>
+<em>Object getPropertyValue(String propertyName)</em><br>
+<em>void setPropertyValue(String propertyName, Object propertyValue)</em><br></p>
 </div>
 <div class="paragraph">
-<p>The GUNO Extension adds the methods <em>getAt(String propertyName)</em> and <em>putAt(String propertyName, Object propertyValue)</em>
-to the XPropertySet class.</p>
+<p>The GUNO Extension adds two special methods to XPropertySet:<br>
+<em>Object getAt(String propertyName)</em><br>
+<em>void putAt(String propertyName, Object propertyValue)</em><br></p>
 </div>
 <div class="paragraph">
-<p>Example: Set the CellStyle of a spreadsheet Cell <strong>xCell</strong>.</p>
+<p>Example: Set the CellStyle of a spreadsheet Cell <em>xCell</em>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Java</strong></p>
@@ -715,7 +717,10 @@ xCellProps.putAt("CellStyle", "Result")</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>By adding <em>getAt()</em> and <em>putAt()</em> methods to XPropertySet we can now access the properties using <a href="http://groovy-lang.org/operators.html#subscript-operator">Groovy Subscript Operator</a> notation. This can Get or Set properties depending on which side of the assigment it&#8217;s on.</p>
+<p>These special methods allow a shorthand version to getAt and PutAt using  <a href="http://groovy-lang.org/operators.html#subscript-operator">Groovy Subscript Operator</a> notation. This can Get or Set properties depending on which side of the assigment it&#8217;s on.</p>
+</div>
+<div class="paragraph">
+<p><strong>GUNO Extension</strong> using Subscript operator for assignment.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -729,7 +734,9 @@ xCellProps.putAt("CellStyle", "Result")</code></pre>
 <div class="sect2">
 <h3 id="truespreadsheet-by-index-and-name"><a class="anchor" href="#truespreadsheet-by-index-and-name"></a>Spreadsheet By Index and Name</h3>
 <div class="paragraph">
-<p>The GUNO Extension adds a <em>getSheetByIndex(Integer nIndex)</em> method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a <em>getSheetByName(String name)</em> method added also.</p>
+<p>The GUNO Extension adds a method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a method that uses the sheet name.<br>
+<em>XSpreadsheet getSheetByIndex(Integer nIndex)</em><br>
+<em>XSpreadsheet getSheetByName(String name)</em></p>
 </div>
 <div class="paragraph">
 <p>The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument <em>myDoc</em></p>
@@ -787,9 +794,13 @@ xCellText.setString("Quotation")</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="truesetting-the-cell-style-property"><a class="anchor" href="#truesetting-the-cell-style-property"></a>Setting the Cell Style property</h3>
+<h3 id="truecell-style"><a class="anchor" href="#truecell-style"></a>Cell Style</h3>
 <div class="paragraph">
-<p>The extension adds a setter method for CellStyle allowing what looks like property access to cellStyle. (ToDo add getter method)</p>
+<p>The extension adds getter and setter methods for CellStyle to XCell<br>
+<em>Object getCellStyle()</em><br>
+<em>void setCellStyle(Object value)</em><br>
+allowing what looks like property access to the CellStyle property.<br>
+To set the cell style to "Result":</p>
 </div>
 <div class="paragraph">
 <p><strong>Without Extension</strong></p>
@@ -808,11 +819,24 @@ xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCell.cellStyle = "Result"</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>To get the style as a String:</p>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">String style = xCell.cellStyle</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="trueusing-enum-types"><a class="anchor" href="#trueusing-enum-types"></a>Using Enum Types</h3>
+<h3 id="truecellvertjustify-enum"><a class="anchor" href="#truecellvertjustify-enum"></a>CellVertJustify Enum</h3>
 <div class="paragraph">
-<p>The extension adds getter and setter methods for CellVertJustify allowing what looks like property access to vertJustify.</p>
+<p>The extension adds getter and setter methods to XCell allowing what looks like property access to vertJustify and use the CellVertJustify enum types.
+<em>Integer getVertJustify()</em><br>
+<em>void setVertJustify(Object value)</em></p>
 </div>
 <div class="paragraph">
 <p><strong>Without Extension</strong></p>
@@ -953,7 +977,7 @@ cellList2.each() {println("Formula cell in column ${it.address.Column}, " +
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-01 20:42:50 -0400
+Last updated 2020-07-02 11:45:56 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
