@@ -463,7 +463,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#trueget-an-xcomponentloader">Get an XComponentLoader</a></li>
 <li><a href="#trueunoruntime-queryinterface">UnoRuntime.queryInterface</a></li>
 <li><a href="#trueproperty-access">Property Access</a></li>
-<li><a href="#truespreadsheet-index-and-cells">Spreadsheet Index and Cells</a></li>
+<li><a href="#truespreadsheet-by-index-and-name">Spreadsheet By Index and Name</a></li>
+<li><a href="#truecell-contents">Cell Contents</a></li>
 <li><a href="#truesetting-the-cell-style-property">Setting the Cell Style property</a></li>
 <li><a href="#trueusing-enum-types">Using Enum Types</a></li>
 <li><a href="#truesetting-the-active-sheet">Setting The Active Sheet</a></li>
@@ -496,6 +497,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>This guide is not intended to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.</p>
+</div>
+<div class="paragraph">
+<p>This documentation&#8217;s AsciiDoc source is maintained in the docs folder of the <a href="https://github.com/cbmarcum/guno-extension">GUNO-Extension Project</a> on GitHub.</p>
 </div>
 </div>
 </div>
@@ -723,7 +727,7 @@ xCellProps.putAt("CellStyle", "Result")</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="truespreadsheet-index-and-cells"><a class="anchor" href="#truespreadsheet-index-and-cells"></a>Spreadsheet Index and Cells</h3>
+<h3 id="truespreadsheet-by-index-and-name"><a class="anchor" href="#truespreadsheet-by-index-and-name"></a>Spreadsheet By Index and Name</h3>
 <div class="paragraph">
 <p>The GUNO Extension adds a <em>getSheetByIndex(Integer nIndex)</em> method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a <em>getSheetByName(String name)</em> method added also.</p>
 </div>
@@ -750,6 +754,36 @@ xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexShee
 </div>
 <div class="paragraph">
 <p>From this point on, the examples are Groovy without and then with the GUNO Extension.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="truecell-contents"><a class="anchor" href="#truecell-contents"></a>Cell Contents</h3>
+<div class="paragraph">
+<p>The GUNO Extension adds getters and setters for cell Formulas (text) and Values (numeric) to XCellRange. This allows you to get or set the contents of a cell by it&#8217;s position in a XCellRange, XSheetCellRange, or XSpreadsheet depending on which Interface  you use.<br>
+The methods are:<br>
+<em>String getFormulaOfCell(int column, int row)</em><br>
+<em>void setFormulaOfCell(int column, int row, String value)</em><br>
+<em>Double getValueOfCell(int column, int row)</em><br>
+<em>void setValueOfCell(int column, int row, float value)</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Without Extension</strong> (assumes we have an xSpreadsheet reference)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XCellRange xCellRange = UnoRuntime.queryInterface(XCellRange.class, xSpreadsheet)
+xCell = xCellRange.getCellByPosition(2,2)
+XText xCellText = UnoRuntime.queryInterface(XText.class, xCell)
+xCellText.setString("Quotation")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>With Extension</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">xSpreadsheet.setFormulaOfCell(2,2, "Quotation")</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -919,7 +953,7 @@ cellList2.each() {println("Formula cell in column ${it.address.Column}, " +
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-29 19:11:53 -0400
+Last updated 2020-07-01 20:42:50 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

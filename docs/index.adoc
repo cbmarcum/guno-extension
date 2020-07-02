@@ -16,6 +16,8 @@ Aside from a few general methods, initial efforts have been on enhancing the spr
 
 This guide is not intended to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.
 
+This documentation's AsciiDoc source is maintained in the docs folder of the https://github.com/cbmarcum/guno-extension[GUNO-Extension Project] on GitHub.
+
 == Getting the Extension
 Projects that build using dependencies from artifact repositories like Apache Maven, JCenter, etc. just need to include
 the latest version as a dependency in the build file or POM.
@@ -173,7 +175,7 @@ xCellProps["CellStyle"] = "Result"
 
 See below for an even faster method to set Cell Properties.
 
-=== Spreadsheet Index and Cells
+=== Spreadsheet By Index and Name
 The GUNO Extension adds a _getSheetByIndex(Integer nIndex)_ method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a _getSheetByName(String name)_ method added also.
 
 The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument _myDoc_
@@ -193,6 +195,31 @@ XSpreadsheet xSheet = myDoc.getSheetByIndex(0)
 ----
 
 From this point on, the examples are Groovy without and then with the GUNO Extension.
+
+=== Cell Contents
+
+The GUNO Extension adds getters and setters for cell Formulas (text) and Values (numeric) to XCellRange. This allows you to get or set the contents of a cell by it's position in a XCellRange, XSheetCellRange, or XSpreadsheet depending on which Interface  you use. +
+The methods are: +
+_String getFormulaOfCell(int column, int row)_ + 
+_void setFormulaOfCell(int column, int row, String value)_ +
+_Double getValueOfCell(int column, int row)_ + 
+_void setValueOfCell(int column, int row, float value)_
+
+
+*Without Extension* (assumes we have an xSpreadsheet reference)
+[source, groovy]
+----
+XCellRange xCellRange = UnoRuntime.queryInterface(XCellRange.class, xSpreadsheet)
+xCell = xCellRange.getCellByPosition(2,2)
+XText xCellText = UnoRuntime.queryInterface(XText.class, xCell)
+xCellText.setString("Quotation")
+----
+
+*With Extension*
+[source, groovy]
+----
+xSpreadsheet.setFormulaOfCell(2,2, "Quotation")
+----
 
 === Setting the Cell Style property
 

@@ -168,7 +168,7 @@ class SpreadsheetExtension {
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the string value to insert.
-     * @deprecated As of release 4.1.6.1, replaced by {@link #getFormulaOfCell(final XCellRange self, int column, int row)}
+     * @deprecated As of release 4.1.6.1, replaced by {@link #setFormulaOfCell(final XCellRange self, int column, int row)}
      */
     @Deprecated
     static void insertFormulaIntoCell(final XSpreadsheet self, int column, int row, String value) {
@@ -183,7 +183,7 @@ class SpreadsheetExtension {
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the float value to insert.
-     * @deprecated As of release 4.1.6.1, replaced by {@link #getValueOfCell(final XCellRange self, int column, int row)}
+     * @deprecated As of release 4.1.6.1, replaced by {@link #setValueOfCell(final XCellRange self, int column, int row)}
      */
     @Deprecated
     static void insertValueIntoCell(final XSpreadsheet self, int column, int row, float value) {
