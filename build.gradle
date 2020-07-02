@@ -43,7 +43,7 @@ repositories {
 }
 
 group 'net.codebuilders'
-version "4.1.6.12" // based on AOO version and patch number
+version "4.1.6.13" // based on AOO version and patch number
 description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
 mainClassName = 'org.openoffice.FakeClassName'
 
