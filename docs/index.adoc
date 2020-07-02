@@ -264,52 +264,31 @@ _Integer getVertJustify()_ +
 _void setVertJustify(Object value)_
 
 *Without Extension*
-
-[source,java]
+[source,groovy]
 ----
 xCellProps.setPropertyValue("VertJustify", com.sun.star.table.CellVertJustify.TOP)
 ----
 
 *With Extension*
-
-[source,java]
+[source,groovy]
 ----
 xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP
 ----
 
-=== Setting The Active Sheet
-
-*Without Extension* but using SpreadsheetDocHelper.groovy included with the  https://wiki.openoffice.org/wiki/OpenOffice_Gradle_Integration[OpenOffice Gradle Integration] aoo-client template. 
-
-[source,java]
-----
-XModel xSpreadsheetModel = sdHelper.getModel()
-XController xSpreadsheetController = xSpreadsheetModel.getCurrentController()
-XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView.class, xSpreadsheetController)
-xSpreadsheetView.setActiveSheet(xSpreadsheet)
-----
-
-*With Extension* and a SpreadsheetDocHelper.groovy method to get the XSpreadsheetView directly 
-
-[source,java]
-----
-XSpreadsheetView xSpreadsheetView = sdHelper.getSpreadsheetView()
-xSpreadsheetView.setActiveSheet(xSpreadsheet)
-----
-
-=== Get Cell Ranges
+=== Cell Ranges
+The GUNO Extension adds a method XSpeadsheet to get the the cell ranges that match certain types. + 
+_XSheetCellRanges getCellRanges(Object type)_ + 
+where type is one or a combination of  http://www.openoffice.org/api/docs/common/ref/com/sun/star/sheet/CellFlags.html[CellFlag constants].
 
 *Without Extension*
-
-[source,java]
+[source,groovy]
 ----
 XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
 XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((short)CellFlags.FORMULA)
 ----
 
 *With Extension*
-
-[source,java]
+[source,groovy]
 ----
 XSheetCellRanges xFormulaCells = xSpreadsheet.getCellRanges(CellFlags.FORMULA)
 ----
