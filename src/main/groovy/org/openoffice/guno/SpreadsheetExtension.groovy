@@ -376,6 +376,16 @@ class SpreadsheetExtension {
         return result
     }
 
+    /** Returns the CellStyle property.
+     * @return Object value determined by the cell style.
+     */
+    static Object getCellStyle(final XCell self) {
+        XPropertySet xCellProps = UnoRuntime.queryInterface(
+                XPropertySet.class, self)
+        Object result = xCellProps.getPropertyValue("CellStyle")
+        return result
+    }
+
     /** Sets the CellStyle property with the value.
      * @param value The value to set.
      */
@@ -391,7 +401,7 @@ class SpreadsheetExtension {
     }
 
     /** Returns the value of the VertJustify property.
-     * @return Integer value of a type detemined by the property.
+     * @return Integer value of a type determined by the property.
      */
     static Integer getVertJustify(final XCell self) {
         int result = self.getPropertyValue("VertJustify").value
