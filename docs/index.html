@@ -448,6 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#trueintroduction">Introduction</a></li>
+<li><a href="#trueextension-explanation">Extension Explanation</a></li>
 <li><a href="#truegetting-the-extension">Getting the Extension</a>
 <ul class="sectlevel2">
 <li><a href="#truegradle-projects">Gradle Projects</a></li>
@@ -511,6 +512,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
+<h2 id="trueextension-explanation"><a class="anchor" href="#trueextension-explanation"></a>Extension Explanation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The term Extension is used in multiple contexts in this document and can cause some confusion. This <a href="https://github.com/cbmarcum/guno-extension">GUNO-Extension</a> project is compiled as a Jar file and is a Groovy Extension module that extends (adds methods to) other precompiled Java UNO library API jars when used with the Groovy programming language.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://github.com/cbmarcum/openoffice-groovy">OpenOffice-Groovy</a> extension is an OpenOffice application extension packaged as an OXT file and installed into OpenOffice using the OpenOffice Extension Manager. OpenOffice extensions add functionality to OpenOffice.</p>
+</div>
+<div class="paragraph">
+<p>Another OpenOffice application extension project is <a href="https://github.com/cbmarcum/openoffice-groovy-macros">OpenOffice-Groovy-Macros</a> that recreate many of the sample macros included with OpenOffice using the Groovy language.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="truegetting-the-extension"><a class="anchor" href="#truegetting-the-extension"></a>Getting the Extension</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -553,7 +568,11 @@ the latest version as a dependency in the build file or POM.</p>
 <div class="sect2">
 <h3 id="trueopenoffice-macros"><a class="anchor" href="#trueopenoffice-macros"></a>OpenOffice Macros</h3>
 <div class="paragraph">
-<p>Macros written in Groovy do not need to include a dependency as the guno-extension jar file is packaged with the <a href="https://github.com/cbmarcum/openoffice-groovy">OpenOffice-Groovy</a> extension. OpenOffice-Groovy is an Extension for OpenOffice that adds Groovy as a Macro language. It is not required to use Groovy for standalone client applications or OpenOffice Extensions. It is required to use the Macro examples in this documentation.</p>
+<p>OpenOffice doesn&#8217;t support Groovy macros by default. A companion project <a href="https://github.com/cbmarcum/openoffice-groovy">OpenOffice-Groovy</a> is an OpenOffice Extension that adds Groovy as a macro language using the OpenOffice Scripting Framework.<br>
+Macros written in Groovy do not need to include a guno-extension dependency as the guno-extension jar file is packaged with the openoffice-groovy extension.</p>
+</div>
+<div class="paragraph">
+<p>The OpenOffice-Groovy extension is not required to use Groovy for standalone client applications or OpenOffice Extensions. It is only required for AOO macros written in Groovy.</p>
 </div>
 </div>
 </div>
@@ -1002,7 +1021,7 @@ cellList.each() { cell -&gt;
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-03 14:47:15 -0400
+Last updated 2020-07-03 17:41:29 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

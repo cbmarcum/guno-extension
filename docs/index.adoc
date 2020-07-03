@@ -18,6 +18,13 @@ This guide is not intended to be an OpenOffice UNO tutorial but is for developer
 
 This documentation's AsciiDoc source is maintained in the docs folder of the https://github.com/cbmarcum/guno-extension[GUNO-Extension Project] on GitHub.
 
+== Extension Explanation
+The term Extension is used in multiple contexts in this document and can cause some confusion. This https://github.com/cbmarcum/guno-extension[GUNO-Extension] project is compiled as a Jar file and is a Groovy Extension module that extends (adds methods to) other precompiled Java UNO library API jars when used with the Groovy programming language.
+
+The https://github.com/cbmarcum/openoffice-groovy[OpenOffice-Groovy] extension is an OpenOffice application extension packaged as an OXT file and installed into OpenOffice using the OpenOffice Extension Manager. OpenOffice extensions add functionality to OpenOffice.
+
+Another OpenOffice application extension project is https://github.com/cbmarcum/openoffice-groovy-macros[OpenOffice-Groovy-Macros] that recreate many of the sample macros included with OpenOffice using the Groovy language.
+
 == Getting the Extension
 Projects that build using dependencies from artifact repositories like Apache Maven, JCenter, etc. just need to include
 the latest version as a dependency in the build file or POM.
@@ -48,7 +55,10 @@ Groovy scripts can declare a Grab dependency at the beginning before import stat
 ----
 
 === OpenOffice Macros 
-Macros written in Groovy do not need to include a dependency as the guno-extension jar file is packaged with the https://github.com/cbmarcum/openoffice-groovy[OpenOffice-Groovy] extension. OpenOffice-Groovy is an Extension for OpenOffice that adds Groovy as a Macro language. It is not required to use Groovy for standalone client applications or OpenOffice Extensions. It is required to use the Macro examples in this documentation.
+OpenOffice doesn't support Groovy macros by default. A companion project https://github.com/cbmarcum/openoffice-groovy[OpenOffice-Groovy] is an OpenOffice Extension that adds Groovy as a macro language using the OpenOffice Scripting Framework. + 
+Macros written in Groovy do not need to include a guno-extension dependency as the guno-extension jar file is packaged with the openoffice-groovy extension. 
+
+The OpenOffice-Groovy extension is not required to use Groovy for standalone client applications or OpenOffice Extensions. It is only required for AOO macros written in Groovy.
 
 == Groovy Syntax
 There are many advantages to using the Groovy language over pure Java and most can be found in the
