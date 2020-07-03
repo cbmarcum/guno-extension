@@ -58,12 +58,12 @@ http://groovy-lang.org/documentation.html[Apache Groovy documentation].
 While Java requires us to cast an Object to a type like when using the queryInterface
 method, Groovy does the casting automatically. We also don't need line-ending semicolons.
 
-*Java*
+.Java
 [source, java]
 ----
 XIndexAccess xIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
 ----
-*Groovy*
+.Groovy
 [source, groovy]
 ----
 XIndexAccess xIndexSheets = UnoRuntime.queryInterface(XIndexAccess.class, xSheets)
@@ -77,12 +77,12 @@ types most of the time. This is only my preference and not a requirement.
 When Object properties have getter and setter methods to use, Groovy allows what appears to be property access while actually
 using the get and set methods.
 
-*Java*
+.Java
 [source,java]
 ----
 XSpreadsheets xSheets = myDoc.getSheets();
 ----
-*Groovy*
+.Groovy
 [source,groovy]
 ----
 XSpreadsheets xSheets = myDoc.sheets
@@ -98,7 +98,7 @@ String str = "My String";
 println("This is " + str);
 ----
 
-*Groovy*
+.Groovy
 [source,groovy]
 ----
 String str = "My String"
