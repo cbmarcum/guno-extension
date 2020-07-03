@@ -456,19 +456,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#trueopenoffice-macros">OpenOffice Macros</a></li>
 </ul>
 </li>
-<li><a href="#truegroovy-syntax">Groovy Syntax</a></li>
+<li><a href="#truegroovy-syntax">Groovy Syntax</a>
+<ul class="sectlevel2">
+<li><a href="#truecasting">Casting</a></li>
+<li><a href="#truestatic-and-dynamic-types">Static and Dynamic Types</a></li>
+<li><a href="#trueproperty-access">Property Access</a></li>
+<li><a href="#truestring-interpolation">String Interpolation</a></li>
+</ul>
+</li>
 <li><a href="#trueusing-the-extension">Using the Extension</a>
 <ul class="sectlevel2">
 <li><a href="#trueimport-statement">Import Statement</a></li>
 <li><a href="#trueget-an-xcomponentloader">Get an XComponentLoader</a></li>
 <li><a href="#trueunoruntime-queryinterface">UnoRuntime.queryInterface</a></li>
-<li><a href="#trueproperty-access">Property Access</a></li>
+<li><a href="#trueproperty-access-2">Property Access</a></li>
 <li><a href="#truespreadsheet-by-index-and-name">Spreadsheet By Index and Name</a></li>
 <li><a href="#truecell-contents">Cell Contents</a></li>
+<li><a href="#truecell-address">Cell Address</a></li>
 <li><a href="#truecell-style">Cell Style</a></li>
 <li><a href="#truecellvertjustify-enum">CellVertJustify Enum</a></li>
 <li><a href="#truecell-ranges">Cell Ranges</a></li>
-<li><a href="#trueuse-of-xenumerationaccess">Use of XEnumerationAccess</a></li>
+<li><a href="#truecell-iteration">Cell Iteration</a></li>
 <li><a href="#truerangecontainer">RangeContainer</a></li>
 </ul>
 </li>
@@ -495,7 +503,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Aside from a few general methods, initial efforts have been on enhancing the spreadsheet API&#8217;s and future work will be on enhancing the other applications.</p>
 </div>
 <div class="paragraph">
-<p>This guide is not intended to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + UNO.</p>
+<p>This guide is not intended to be an OpenOffice UNO tutorial but is for developers familiar with the concepts to showcase the advantages of Apache Groovy + GUNO Extension for UNO programming.</p>
 </div>
 <div class="paragraph">
 <p>This documentation&#8217;s AsciiDoc source is maintained in the docs folder of the <a href="https://github.com/cbmarcum/guno-extension">GUNO-Extension Project</a> on GitHub.</p>
@@ -555,8 +563,12 @@ the latest version as a dependency in the build file or POM.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>There are many advantages to using the Groovy language over pure Java and most can be found in the
-<a href="http://groovy-lang.org/documentation.html">Apache Groovy documentation</a>.
-A few things we&#8217;ll point out here are while Java requires us to cast an Object to a type like when using the queryInterface
+<a href="http://groovy-lang.org/documentation.html">Apache Groovy documentation</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="truecasting"><a class="anchor" href="#truecasting"></a>Casting</h3>
+<div class="paragraph">
+<p>While Java requires us to cast an Object to a type like when using the queryInterface
 method, Groovy does the casting automatically. We also don&#8217;t need line-ending semicolons.</p>
 </div>
 <div class="paragraph">
@@ -575,11 +587,19 @@ method, Groovy does the casting automatically. We also don&#8217;t need line-end
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XIndexAccess xIndexSheets = UnoRuntime.queryInterface(XIndexAccess.class, xSheets)</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="truestatic-and-dynamic-types"><a class="anchor" href="#truestatic-and-dynamic-types"></a>Static and Dynamic Types</h3>
 <div class="paragraph">
 <p>While Groovy works great as a dynamic language where we can declare variables with the <em>def</em> keyword, I prefer to declare
-types most of the time. This is only my preference and not a requirement.
-When Object properties have getter and setter methods to use, Groovy allows what appears to be property access while actually
-using the get and set methods at compile time.</p>
+types most of the time. This is only my preference and not a requirement.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueproperty-access"><a class="anchor" href="#trueproperty-access"></a>Property Access</h3>
+<div class="paragraph">
+<p>When Object properties have getter and setter methods to use, Groovy allows what appears to be property access while actually
+using the get and set methods.</p>
 </div>
 <div class="paragraph">
 <p><strong>Java</strong></p>
@@ -598,6 +618,49 @@ using the get and set methods at compile time.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="truestring-interpolation"><a class="anchor" href="#truestring-interpolation"></a>String Interpolation</h3>
+<div class="paragraph">
+<p>Groovy has a feature called <a href="http://groovy-lang.org/syntax.html#_string_interpolation">String Interpolation</a> where a variable is replaced with it&#8217;s string value upon evauation of the string by enclosing the variable as shown.</p>
+</div>
+<div class="paragraph">
+<p><strong>Java</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">String str = "My String";
+println("This is " + str);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Groovy</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">String str = "My String"
+println "This is ${str}"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both output <code>This is My String</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">Macro Development Tip</div>
+<div class="paragraph">
+<p>If you start OpenOffice from the command line you can see stdout and stderr message output when using <code>println()</code> statements.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div class="sect1">
 <h2 id="trueusing-the-extension"><a class="anchor" href="#trueusing-the-extension"></a>Using the Extension</h2>
@@ -607,10 +670,8 @@ using the get and set methods at compile time.</p>
 </div>
 <div class="sect2">
 <h3 id="trueimport-statement"><a class="anchor" href="#trueimport-statement"></a>Import Statement</h3>
-<div class="paragraph">
-<p>Add the UnoExtention to imports</p>
-</div>
 <div class="listingblock">
+<div class="title">Add the UnoExtension to imports</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">import org.openoffice.guno.UnoExtension</code></pre>
 </div>
@@ -622,10 +683,8 @@ using the get and set methods at compile time.</p>
 <p>One of the first objects we need in AOO development  after we bootstrap the office and acquire an XComponentContext is an
 XComponentLoader we can use to load a document. This requires a few steps as shown:</p>
 </div>
-<div class="paragraph">
-<p><strong>Groovy</strong> (begins with a XComponentContext <em>xComponentContext</em> reference)</p>
-</div>
 <div class="listingblock">
+<div class="title">Groovy (begins with a XComponentContext <em>xComponentContext</em> reference)</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XMultiComponentFactory mxRemoteServiceManager = null
     XComponentLoader aLoader = null
@@ -636,12 +695,11 @@ XComponentLoader we can use to load a document. This requires a few steps as sho
 </div>
 </div>
 <div class="paragraph">
-<p>The GUNO Extension adds a convenience method <em>getComponentLoader()</em> to the XComponentContext class to return an XComponentLoader object.</p>
-</div>
-<div class="paragraph">
-<p><strong>GUNO Extension</strong> (same <em>xComponentContext</em> reference)</p>
+<p>The GUNO Extension adds a convenience method to XComponentContext<br>
+<code>XComponentLoader getComponentLoader()</code> to return an XComponentLoader object.</p>
 </div>
 <div class="listingblock">
+<div class="title">GUNO Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XComponentLoader aLoader = xComponentContext.componentLoader</code></pre>
 </div>
@@ -650,78 +708,66 @@ XComponentLoader we can use to load a document. This requires a few steps as sho
 <div class="sect2">
 <h3 id="trueunoruntime-queryinterface"><a class="anchor" href="#trueunoruntime-queryinterface"></a>UnoRuntime.queryInterface</h3>
 <div class="paragraph">
-<p>A common task in OpenOffice development with Java is using the static <em>UnoRuntime.queryInterface()</em> method to get an
+<p>A common task in OpenOffice development with Java is using the static <code>UnoRuntime.queryInterface()</code> method to get an
 Interface reference from another within the same Service object. The UNO concepts of Services and Intefaces are beyond
 the scope of this guide, but you can get more information in the <a href="https://wiki.openoffice.org/wiki/Documentation/DevGuide">AOO Development Guide</a>.</p>
 </div>
 <div class="paragraph">
-<p>The <em>UnoRuntime.queryInterface(ReturnObject.class, FromObject)</em> method can be replaced with the new <em>FromObject.guno(ReturnObject.class)</em> method.</p>
-</div>
-<div class="paragraph">
-<p><strong>Java</strong> (assumes we have a reference to XSpreadsheetDocument <em>myDoc</em>)</p>
+<p>The <code>UnoRuntime.queryInterface(ReturnObject.class, FromObject)</code> method can be replaced with the new <code>FromObject.guno(ReturnObject.class)</code> method.</p>
 </div>
 <div class="listingblock">
+<div class="title">Java (begins with a XSpreadsheetDocument <em>myDoc</em> reference)</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.getSheets();
-XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
-xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));</code></pre>
+XIndexAccess xIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
+xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, xIndexSheets.getByIndex(0));</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p><strong>GUNO Extension</strong></p>
 </div>
 <div class="listingblock">
+<div class="title">GUNO Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.sheets
-XIndexAccess oIndexSheets = xSheets.guno(XIndexAccess.class)
-xSheet = oIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</code></pre>
+XIndexAccess xIndexSheets = xSheets.guno(XIndexAccess.class)
+xSheet = xIndexSheets.getByIndex(0).guno(XSpreadsheet.class)</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="trueproperty-access"><a class="anchor" href="#trueproperty-access"></a>Property Access</h3>
+<h3 id="trueproperty-access-2"><a class="anchor" href="#trueproperty-access-2"></a>Property Access</h3>
 <div class="paragraph">
 <p>An UNO object must offer its properties through interfaces that allow you to work with properties. The most basic form
 of these interfaces is the interface com.sun.star.beans.XPropertySet .</p>
 </div>
 <div class="paragraph">
-<p>In XPropertySet, two methods carry out the property access:<br>
-<em>Object getPropertyValue(String propertyName)</em><br>
-<em>void setPropertyValue(String propertyName, Object propertyValue)</em><br></p>
+<p>In XPropertySet, two methods carry out the property access:
+<code>Object getPropertyValue(String propertyName)</code> and
+<code>void setPropertyValue(String propertyName, Object propertyValue)</code>.</p>
 </div>
 <div class="paragraph">
-<p>The GUNO Extension adds two special methods to XPropertySet:<br>
-<em>Object getAt(String propertyName)</em><br>
-<em>void putAt(String propertyName, Object propertyValue)</em><br></p>
+<p>The GUNO Extension adds two special methods to XPropertySet: <code>Object getAt(String propertyName)</code> and <code>void putAt(String propertyName, Object propertyValue)</code>.</p>
 </div>
 <div class="paragraph">
-<p>Example: Set the CellStyle of a spreadsheet Cell <em>xCell</em>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Java</strong></p>
+<p>Example: Set the CellStyle of a spreadsheet Cell <code>xCell</code>.</p>
 </div>
 <div class="listingblock">
+<div class="title">Java</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XPropertySet xCellProps = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, xCell);
 xCellProps.setPropertyValue("CellStyle", "Result");</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>GUNO Extension</strong></p>
-</div>
 <div class="listingblock">
+<div class="title">GUNO Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XPropertySet xCellProps = xCell.guno(XPropertySet.class)
 xCellProps.putAt("CellStyle", "Result")</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>These special methods allow a shorthand version to getAt and PutAt using  <a href="http://groovy-lang.org/operators.html#subscript-operator">Groovy Subscript Operator</a> notation. This can Get or Set properties depending on which side of the assigment it&#8217;s on.</p>
-</div>
-<div class="paragraph">
-<p><strong>GUNO Extension</strong> using Subscript operator for assignment.</p>
+<p>These special methods allow a shorthand version to <code>getAt()</code> and <code>putAt()</code> using <a href="http://groovy-lang.org/operators.html#subscript-operator">Groovy Subscript Operator</a> notation. This can Get or Set properties depending on which side of the assigment it&#8217;s on.</p>
 </div>
 <div class="listingblock">
+<div class="title">GUNO Extension using the Subscript operator for assignment.</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">xCellProps["CellStyle"] = "Result"</code></pre>
 </div>
@@ -733,27 +779,22 @@ xCellProps.putAt("CellStyle", "Result")</code></pre>
 <div class="sect2">
 <h3 id="truespreadsheet-by-index-and-name"><a class="anchor" href="#truespreadsheet-by-index-and-name"></a>Spreadsheet By Index and Name</h3>
 <div class="paragraph">
-<p>The GUNO Extension adds a method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a method that uses the sheet name.<br>
-<em>XSpreadsheet getSheetByIndex(Integer nIndex)</em><br>
-<em>XSpreadsheet getSheetByName(String name)</em></p>
+<p>The GUNO Extension adds a method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a method that uses the sheet name to get the sheet. <code>XSpreadsheet getSheetByIndex(Integer nIndex)</code> and
+<code>XSpreadsheet getSheetByName(String name)</code>.</p>
 </div>
 <div class="paragraph">
 <p>The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument <em>myDoc</em></p>
 </div>
-<div class="paragraph">
-<p><strong>Java</strong></p>
-</div>
 <div class="listingblock">
+<div class="title">Java</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSpreadsheets xSheets = myDoc.getSheets();
-XIndexAccess oIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
-xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexSheets.getByIndex(0));</code></pre>
+XIndexAccess xIndexSheets = (XIndexAccess) UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
+xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, xIndexSheets.getByIndex(0));</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p><strong>GUNO Extension</strong></p>
 </div>
 <div class="listingblock">
+<div class="title">GUNO Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XSpreadsheet xSheet = myDoc.getSheetByIndex(0)</code></pre>
 </div>
@@ -767,15 +808,13 @@ xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, oIndexShee
 <div class="paragraph">
 <p>The GUNO Extension adds getters and setters for cell Formulas (text) and Values (numeric) to XCellRange. This allows you to get or set the contents of a cell by it&#8217;s position in a XCellRange, XSheetCellRange, or XSpreadsheet depending on which Interface  you use.<br>
 The methods are:<br>
-<em>String getFormulaOfCell(int column, int row)</em><br>
-<em>void setFormulaOfCell(int column, int row, String value)</em><br>
-<em>Double getValueOfCell(int column, int row)</em><br>
-<em>void setValueOfCell(int column, int row, float value)</em></p>
-</div>
-<div class="paragraph">
-<p><strong>Without Extension</strong> (assumes we have an xSpreadsheet reference)</p>
+<code>String getFormulaOfCell(int column, int row)</code><br>
+<code>void setFormulaOfCell(int column, int row, String value)</code><br>
+<code>Double getValueOfCell(int column, int row)</code><br>
+<code>void setValueOfCell(int column, int row, float value)</code></p>
 </div>
 <div class="listingblock">
+<div class="title">Without Extension (begins with an XSpreadsheet <em>xSpreadsheet</em> reference)</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XCellRange xCellRange = UnoRuntime.queryInterface(XCellRange.class, xSpreadsheet)
 xCell = xCellRange.getCellByPosition(2,2)
@@ -783,48 +822,65 @@ XText xCellText = UnoRuntime.queryInterface(XText.class, xCell)
 xCellText.setString("Quotation")</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>With Extension</strong></p>
-</div>
 <div class="listingblock">
+<div class="title">With Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">xSpreadsheet.setFormulaOfCell(2,2, "Quotation")</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="truecell-style"><a class="anchor" href="#truecell-style"></a>Cell Style</h3>
+<h3 id="truecell-address"><a class="anchor" href="#truecell-address"></a>Cell Address</h3>
 <div class="paragraph">
-<p>The extension adds getter and setter methods for CellStyle to XCell<br>
-<em>Object getCellStyle()</em><br>
-<em>void setCellStyle(Object value)</em><br>
-allowing what looks like property access to the CellStyle property.<br>
-To set the cell style to "Result":</p>
+<p>A CellAddress object allows access to the column and row address of a cell. Normally you need to get a XCellAddressable object using an XCell reference to get a CellAddress object.<br>
+The GUNO Extension adds a <em>CellAddress getAddress()</em> method to XCell to get the address directly.</p>
 </div>
 <div class="paragraph">
-<p><strong>Without Extension</strong></p>
+<p>Example: Get the address of a cell and print it.</p>
 </div>
 <div class="listingblock">
+<div class="title">Without Extension (begins with an XCell <em>xCell</em> reference)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XCellAddressable xCellAddressable = UnoRuntime.queryInterface(XCellAddressable.class, xCell)
+CellAddress cellAddress = xCellAddressable.getCellAddress()
+println("Cell Address: column ${cellAddress.Column}, row ${cellAddress.Row}")</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">With Extension</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">CellAddress cellAddress = xCell.address
+println("Cell Address: column ${cellAddress.Column}, row ${cellAddress.Row}")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="truecell-style"><a class="anchor" href="#truecell-style"></a>Cell Style</h3>
+<div class="paragraph">
+<p>The extension adds getter and setter methods for CellStyle to XCell:<br>
+<code>Object getCellStyle()</code> and <code>void setCellStyle(Object value)</code> allowing what looks like property access to the CellStyle property.</p>
+</div>
+<div class="paragraph">
+<p>Example: Set the cell style to "Result":</p>
+</div>
+<div class="listingblock">
+<div class="title">Without Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XPropertySet xCellProps = UnoRuntime.queryInterface(XPropertySet.class, xCell)
 xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>With extension</strong></p>
-</div>
 <div class="listingblock">
+<div class="title">With extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">xCell.cellStyle = "Result"</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To get the style as a String:</p>
-</div>
-<div class="paragraph">
-<p><strong>With Extension</strong></p>
+<p>Example: Get the style as a String:</p>
 </div>
 <div class="listingblock">
+<div class="title">With Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">String style = xCell.cellStyle</code></pre>
 </div>
@@ -833,22 +889,17 @@ xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
 <div class="sect2">
 <h3 id="truecellvertjustify-enum"><a class="anchor" href="#truecellvertjustify-enum"></a>CellVertJustify Enum</h3>
 <div class="paragraph">
-<p>The extension adds getter and setter methods to XCell allowing what looks like property access to vertJustify and use the CellVertJustify enum types.
-<em>Integer getVertJustify()</em><br>
-<em>void setVertJustify(Object value)</em></p>
-</div>
-<div class="paragraph">
-<p><strong>Without Extension</strong></p>
+<p>The extension adds getter and setter methods to XCell allowing what looks like property access to vertJustify and use the <a href="https://www.openoffice.org/api/docs/common/ref//com/sun/star/table/CellVertJustify.html">CellVertJustify</a> enum types.<br>
+<code>Integer getVertJustify()</code> and <code>void setVertJustify(Object value)</code>.</p>
 </div>
 <div class="listingblock">
+<div class="title">Without Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">xCellProps.setPropertyValue("VertJustify", com.sun.star.table.CellVertJustify.TOP)</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>With Extension</strong></p>
-</div>
 <div class="listingblock">
+<div class="title">With Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP</code></pre>
 </div>
@@ -857,36 +908,32 @@ xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
 <div class="sect2">
 <h3 id="truecell-ranges"><a class="anchor" href="#truecell-ranges"></a>Cell Ranges</h3>
 <div class="paragraph">
-<p>The GUNO Extension adds a method XSpeadsheet to get the the cell ranges that match certain types.<br>
-<em>XSheetCellRanges getCellRanges(Object type)</em><br>
-where type is one or a combination of  <a href="http://www.openoffice.org/api/docs/common/ref/com/sun/star/sheet/CellFlags.html">CellFlag constants</a>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Without Extension</strong></p>
+<p>The GUNO Extension adds a method to XSpeadsheet to get the the cell ranges that match certain types.:<br>
+<code>XSheetCellRanges getCellRanges(Object type)</code> where type is one or a combination of  <a href="http://www.openoffice.org/api/docs/common/ref/com/sun/star/sheet/CellFlags.html">CellFlag constants</a> added together.</p>
 </div>
 <div class="listingblock">
+<div class="title">Without Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
 XSheetCellRanges xFormulaCells = xCellQuery.queryContentCells((short)CellFlags.FORMULA)</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>With Extension</strong></p>
-</div>
 <div class="listingblock">
+<div class="title">With Extension</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XSheetCellRanges xFormulaCells = xSpreadsheet.getCellRanges(CellFlags.FORMULA)</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="trueuse-of-xenumerationaccess"><a class="anchor" href="#trueuse-of-xenumerationaccess"></a>Use of XEnumerationAccess</h3>
+<h3 id="truecell-iteration"><a class="anchor" href="#truecell-iteration"></a>Cell Iteration</h3>
 <div class="paragraph">
-<p><strong>Without Extension</strong> we get an Enumeration and use it iterate through Cells</p>
+<p>Normally we start with a Cell Range and get an XEnumerationAccess, and from that an XEnumeration and use it iterate through Cells.<br></p>
 </div>
 <div class="listingblock">
+<div class="title">Without Extension</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XEnumerationAccess xFormulas = xFormulaCells.getCells()
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XEnumerationAccess xFormulas = xFormulaCells.getCells()
 XEnumeration xFormulaEnum = xFormulas.createEnumeration()
 while (xFormulaEnum.hasMoreElements()) {
     Object formulaCell = xFormulaEnum.nextElement()
@@ -899,13 +946,18 @@ while (xFormulaEnum.hasMoreElements()) {
 </div>
 </div>
 <div class="paragraph">
-<p><strong>With Extension</strong> we can use a List provided by a new method and a closure to iterate through each cell.</p>
+<p>The GUNO Extension adds a <code>List&lt;XCell&gt; getCellList()</code> method to both XSheetCellRanges and XSheetCellRangeContainer to get a List of cells to iterate over.</p>
+</div>
+<div class="paragraph">
+<p>Using the List we can iterate through each cell in a <a href="http://groovy-lang.org/closures.html">Groovy Closure</a>.</p>
 </div>
 <div class="listingblock">
+<div class="title">With Extension</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XCell[] cellList = xFormulaCells.cellList
-cellList.each() {println("Formula cell in column ${it.address.Column}, " +
-    "row ${it.address.Row} contains ${it.formula}")
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XCell[] cellList = xFormulaCells.cellList
+cellList.each() { cell -&gt;
+    println("Formula cell in column ${cell.address.Column}, " +
+    "row ${cell.address.Row} contains ${cell.formula}")
 }</code></pre>
 </div>
 </div>
@@ -913,42 +965,46 @@ cellList.each() {println("Formula cell in column ${it.address.Column}, " +
 <div class="sect2">
 <h3 id="truerangecontainer"><a class="anchor" href="#truerangecontainer"></a>RangeContainer</h3>
 <div class="paragraph">
-<p>Example: Create a new cell range container, add all cells that are filled, and iterate through them.</p>
+<p>Range Containers hold Cell Ranges. XSheetRangeContainer provides methods to access cell ranges in a collection via index and to add and remove cell ranges.</p>
 </div>
 <div class="paragraph">
-<p><strong>Without Extension</strong></p>
+<p>Example: Create a new cell range container, add all cells that are filled, and iterate through them.<br>
+XCellRangesQuery <code>queryContentCells()</code> takes a short but CellFlags are a long (1023 is the total of all CellFlag constants)</p>
 </div>
 <div class="listingblock">
+<div class="title">Without Extension (begins with an XSpreadsheet xSpreadsheet reference)</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">com.sun.star.lang.XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(
-    com.sun.star.lang.XMultiServiceFactory.class, xSpreadsheetDocument)
-com.sun.star.sheet.XSheetCellRangeContainer xRangeCont = UnoRuntime.queryInterface(
-    com.sun.star.sheet.XSheetCellRangeContainer.class,
-    xDocFactory.createInstance("com.sun.star.sheet.SheetCellRanges"));
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XCellRangesQuery xCellQuery = UnoRuntime.queryInterface(XCellRangesQuery.class, xSpreadsheet)
+XSheetCellRanges xCellRanges = xCellQuery.queryContentCells((short) 1023)
+com.sun.star.lang.XMultiServiceFactory xDocFactory = UnoRuntime.queryInterface(com.sun.star.lang.XMultiServiceFactory.class, xSpreadsheetDocument)
+com.sun.star.sheet.XSheetCellRangeContainer xRangeCont = UnoRuntime.queryInterface(com.sun.star.sheet.XSheetCellRangeContainer.class,
+    xDocFactory.createInstance("com.sun.star.sheet.SheetCellRanges"))
 xRangeCont.addRangeAddresses(xCellRanges.rangeAddresses, false)
-print("All filled cells: ")
+println("All filled cells: ")
 com.sun.star.container.XEnumerationAccess xCellsEA = xRangeCont.getCells()
 com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()
 while (xEnum.hasMoreElements()) {
     Object aCellObj = xEnum.nextElement()
-    com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(
-        com.sun.star.sheet.XCellAddressable.class, aCellObj)
-    com.sun.star.table.CellAddress aAddr = xAddr.getCellAddress()
-    println(sdHelper.getCellAddressString(aAddr.Column, aAddr.Row) + " ")
+    xCell = (XCell)UnoRuntime.queryInterface(XCell.class, aCellObj);
+    com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(com.sun.star.sheet.XCellAddressable.class, aCellObj)
+    com.sun.star.table.CellAddress cellAddress = xAddr.getCellAddress()
+    println("Formula cell in column ${cellAddress.Column}, row ${cellAddress.Row} contains ${xCell.formula}")
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>With Extension</strong></p>
+<p>The GUNO Extension adds a <code>XSheetCellRangeContainer getRangeContainer()</code> method to XSpreadsheetDocument that returns an XSheetRangeContainer.</p>
 </div>
 <div class="listingblock">
+<div class="title">With Extension and using a Closure to iterate over</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">XSheetCellRangeContainer xRangeCont = xSpreadsheetDocument.rangeContainer
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XSheetCellRangeContainer xRangeCont = xSpreadsheetDocument.rangeContainer
 XSheetCellRanges xCellRanges = xSpreadsheet.getCellRanges(1023)
-XCell[] cellList2 = xRangeCont.cellList
-print("All filled cells: ")
-cellList2.each() {println("Formula cell in column ${it.address.Column}, " +
-    "row ${it.address.Row} contains ${it.formula}")
+xRangeCont.addRangeAddresses(xCellRanges.rangeAddresses, false)
+XCell[] cellList = xRangeCont.cellList
+println("All filled cells: ")
+cellList.each() { cell -&gt;
+    println("Formula cell in column ${cell.address.Column}, row ${cell.address.Row} contains ${cell.formula}")
 }</code></pre>
 </div>
 </div>
@@ -958,7 +1014,7 @@ cellList2.each() {println("Formula cell in column ${it.address.Column}, " +
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-02 18:34:39 -0400
+Last updated 2020-07-03 14:35:37 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
