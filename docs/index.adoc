@@ -91,7 +91,7 @@ XSpreadsheets xSheets = myDoc.sheets
 === String Interpolation
 Groovy has a feature called http://groovy-lang.org/syntax.html#_string_interpolation[String Interpolation] where a variable is replaced with it's string value upon evauation of the string by enclosing the variable as shown.
 
-*Java*
+.Java
 [source,java]
 ----
 String str = "My String";
