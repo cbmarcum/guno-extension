@@ -126,6 +126,7 @@ If you start OpenOffice from the command line you can see stdout and stderr mess
 The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
 
 === Import Statement
+To use the UnoExtension you need to add to your imports section
 .Add the UnoExtension to imports
 [source, groovy]
 ----
@@ -219,7 +220,7 @@ See below for an even faster method to set Cell Properties.
 The GUNO Extension adds a method to XSpreadsheetDocument that returns the XSpreadsheet by the index position saving the steps of getting the XIndexAccess enumeration of sheets and then getting the sheet by index. Likewise there is a method that uses the sheet name to get the sheet. `XSpreadsheet getSheetByIndex(Integer nIndex)` and 
 `XSpreadsheet getSheetByName(String name)`.
 
-The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument _myDoc_
+The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument `myDoc`
 
 .Java
 [source,java]
@@ -236,6 +237,32 @@ XSpreadsheet xSheet = myDoc.getSheetByIndex(0)
 ----
 
 From this point on, the examples are Groovy without and then with the GUNO Extension.
+
+=== Index Access
+The GUNO Extension adds a special `getAt(int index)` method to XIndexAccess that allows the Groovy Subscript operator to be used.
+
+This first example will ignore that we already have a method to get a sheet by index from a spreadsheet document to highlight the the Subscript operator with XIndexAccess `xIndexAccess[0]` instead of `xIndexAccess.getByIndex(0)`.
+
+Example: Set the active sheet.
+
+.With Extension (begin with an XSpreadsheetDocument `xSpreadsheetDocument` reference)
+----
+XSpreadsheets xSheets = xSpreadsheetDocument.sheets
+XIndexAccess xIndexAccess = xSheets.guno(XIndexAccess.class)
+xSheet = xIndexAccess[0].guno(XSpreadsheet.class)
+XController xController = xModel.currentController
+XSpreadsheetView xSpreadsheetView = xController.guno(XSpreadsheetView.class)
+xSpreadsheetView.activeSheet = xSheet
+----
+
+.GUNO Extension (shorter version)
+----
+xSheet = xSpreadsheetDocument.getSheetByIndex(0)
+XController xController = xModel.currentController
+XSpreadsheetView xSpreadsheetView = xController.guno(XSpreadsheetView.class)
+xSpreadsheetView.activeSheet = xSheet
+----
+
 
 === Cell Contents
 The GUNO Extension adds getters and setters for cell Formulas (text) and Values (numeric) to XCellRange. This allows you to get or set the contents of a cell by it's position in a XCellRange, XSheetCellRange, or XSpreadsheet depending on which Interface  you use. +
@@ -393,7 +420,7 @@ com.sun.star.container.XEnumerationAccess xCellsEA = xRangeCont.getCells()
 com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()          
 while (xEnum.hasMoreElements()) {
     Object aCellObj = xEnum.nextElement()
-    xCell = (XCell)UnoRuntime.queryInterface(XCell.class, aCellObj);
+    xCell = UnoRuntime.queryInterface(XCell.class, aCellObj);
     com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(com.sun.star.sheet.XCellAddressable.class, aCellObj)
     com.sun.star.table.CellAddress cellAddress = xAddr.getCellAddress()
     println("Formula cell in column ${cellAddress.Column}, row ${cellAddress.Row} contains ${xCell.formula}")

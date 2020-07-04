@@ -472,6 +472,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#trueunoruntime-queryinterface">UnoRuntime.queryInterface</a></li>
 <li><a href="#trueproperty-access-2">Property Access</a></li>
 <li><a href="#truespreadsheet-by-index-and-name">Spreadsheet By Index and Name</a></li>
+<li><a href="#trueindex-access">Index Access</a></li>
 <li><a href="#truecell-contents">Cell Contents</a></li>
 <li><a href="#truecell-address">Cell Address</a></li>
 <li><a href="#truecell-style">Cell Style</a></li>
@@ -677,8 +678,11 @@ println "This is ${str}"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="trueimport-statement"><a class="anchor" href="#trueimport-statement"></a>Import Statement</h3>
+<div class="paragraph">
+<p>To use the UnoExtension you need to add to your imports section
+.Add the UnoExtension to imports</p>
+</div>
 <div class="listingblock">
-<div class="title">Add the UnoExtension to imports</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">import org.openoffice.guno.UnoExtension</code></pre>
 </div>
@@ -790,7 +794,7 @@ xCellProps.putAt("CellStyle", "Result")</code></pre>
 <code>XSpreadsheet getSheetByName(String name)</code>.</p>
 </div>
 <div class="paragraph">
-<p>The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument <em>myDoc</em></p>
+<p>The example leaves out the try/catch for brevity and assumes we have a reference to XSpreadsheetDocument <code>myDoc</code></p>
 </div>
 <div class="listingblock">
 <div class="title">Java</div>
@@ -808,6 +812,38 @@ xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, xIndexShee
 </div>
 <div class="paragraph">
 <p>From this point on, the examples are Groovy without and then with the GUNO Extension.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trueindex-access"><a class="anchor" href="#trueindex-access"></a>Index Access</h3>
+<div class="paragraph">
+<p>The GUNO Extension adds a special <code>getAt(int index)</code> method to XIndexAccess that allows the Groovy Subscript operator to be used.</p>
+</div>
+<div class="paragraph">
+<p>This first example will ignore that we already have a method to get a sheet by index from a spreadsheet document to highlight the the Subscript operator with XIndexAccess <code>xIndexAccess[0]</code> instead of <code>xIndexAccess.getByIndex(0)</code>.</p>
+</div>
+<div class="paragraph">
+<p>Example: Set the active sheet.</p>
+</div>
+<div class="listingblock">
+<div class="title">With Extension (begin with an XSpreadsheetDocument <code>xSpreadsheetDocument</code> reference)</div>
+<div class="content">
+<pre>XSpreadsheets xSheets = xSpreadsheetDocument.sheets
+XIndexAccess xIndexAccess = xSheets.guno(XIndexAccess.class)
+xSheet = xIndexAccess[0].guno(XSpreadsheet.class)
+XController xController = xModel.currentController
+XSpreadsheetView xSpreadsheetView = xController.guno(XSpreadsheetView.class)
+xSpreadsheetView.activeSheet = xSheet</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">GUNO Extension (shorter version)</div>
+<div class="content">
+<pre>xSheet = xSpreadsheetDocument.getSheetByIndex(0)
+XController xController = xModel.currentController
+XSpreadsheetView xSpreadsheetView = xController.guno(XSpreadsheetView.class)
+xSpreadsheetView.activeSheet = xSheet</pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -992,7 +1028,7 @@ com.sun.star.container.XEnumerationAccess xCellsEA = xRangeCont.getCells()
 com.sun.star.container.XEnumeration xEnum = xCellsEA.createEnumeration()
 while (xEnum.hasMoreElements()) {
     Object aCellObj = xEnum.nextElement()
-    xCell = (XCell)UnoRuntime.queryInterface(XCell.class, aCellObj);
+    xCell = UnoRuntime.queryInterface(XCell.class, aCellObj);
     com.sun.star.sheet.XCellAddressable xAddr = UnoRuntime.queryInterface(com.sun.star.sheet.XCellAddressable.class, aCellObj)
     com.sun.star.table.CellAddress cellAddress = xAddr.getCellAddress()
     println("Formula cell in column ${cellAddress.Column}, row ${cellAddress.Row} contains ${xCell.formula}")
@@ -1021,7 +1057,7 @@ cellList.each() { cell -&gt;
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-03 17:41:29 -0400
+Last updated 2020-07-04 15:36:34 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
