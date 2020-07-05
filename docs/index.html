@@ -482,6 +482,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#truerangecontainer">RangeContainer</a></li>
 </ul>
 </li>
+<li><a href="#truegraphical-user-interfaces">Graphical User Interfaces</a>
+<ul class="sectlevel2">
+<li><a href="#truemessage-box">Message Box</a></li>
+<li><a href="#truegroovy-swingbuilder">Groovy SwingBuilder</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -607,7 +613,7 @@ method, Groovy does the casting automatically. We also don&#8217;t need line-end
 <div class="sect2">
 <h3 id="truestatic-and-dynamic-types"><a class="anchor" href="#truestatic-and-dynamic-types"></a>Static and Dynamic Types</h3>
 <div class="paragraph">
-<p>While Groovy works great as a dynamic language where we can declare variables with the <em>def</em> keyword, I prefer to declare
+<p>While Groovy works great as a dynamic language where we can declare variables with the <code>def</code> keyword, I prefer to declare
 types most of the time. This is only my preference and not a requirement.</p>
 </div>
 </div>
@@ -679,10 +685,10 @@ println "This is ${str}"</code></pre>
 <div class="sect2">
 <h3 id="trueimport-statement"><a class="anchor" href="#trueimport-statement"></a>Import Statement</h3>
 <div class="paragraph">
-<p>To use the UnoExtension you need to add to your imports section
-.Add the UnoExtension to imports</p>
+<p>To use the UnoExtension you need to add to your imports section.</p>
 </div>
 <div class="listingblock">
+<div class="title">Add the UnoExtension to imports</div>
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">import org.openoffice.guno.UnoExtension</code></pre>
 </div>
@@ -826,7 +832,7 @@ xSheet = (XSpreadsheet) UnoRuntime.queryInterface(XSpreadsheet.class, xIndexShee
 <p>Example: Set the active sheet.</p>
 </div>
 <div class="listingblock">
-<div class="title">With Extension (begin with an XSpreadsheetDocument <code>xSpreadsheetDocument</code> reference)</div>
+<div class="title">With Extension (begin with an XSpreadsheetDocument xSpreadsheetDocument reference)</div>
 <div class="content">
 <pre>XSpreadsheets xSheets = xSpreadsheetDocument.sheets
 XIndexAccess xIndexAccess = xSheets.guno(XIndexAccess.class)
@@ -951,7 +957,7 @@ xCellProps.setPropertyValue("CellStyle", "Result")</code></pre>
 <div class="sect2">
 <h3 id="truecell-ranges"><a class="anchor" href="#truecell-ranges"></a>Cell Ranges</h3>
 <div class="paragraph">
-<p>The GUNO Extension adds a method to XSpeadsheet to get the the cell ranges that match certain types.:<br>
+<p>The GUNO Extension adds a method to XSpreadsheet to get the the cell ranges that match certain types.:<br>
 <code>XSheetCellRanges getCellRanges(Object type)</code> where type is one or a combination of  <a href="http://www.openoffice.org/api/docs/common/ref/com/sun/star/sheet/CellFlags.html">CellFlag constants</a> added together.</p>
 </div>
 <div class="listingblock">
@@ -1054,10 +1060,123 @@ cellList.each() { cell -&gt;
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="truegraphical-user-interfaces"><a class="anchor" href="#truegraphical-user-interfaces"></a>Graphical User Interfaces</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="truemessage-box"><a class="anchor" href="#truemessage-box"></a>Message Box</h3>
+<div class="paragraph">
+<p>UNO provides a XMessageBox to display UI messages to the user. There a a number of steps to get from an XComponentContext to displaying a message.</p>
+</div>
+<div class="paragraph">
+<p>There are standard  <a href="https://www.openoffice.org/api/docs/common/ref/com/sun/star/awt/MessageBoxType.html">MessageBoxType enums</a> used depending on the icon and <a href="https://www.openoffice.org/api/docs/common/ref/com/sun/star/awt/MessageBoxButtons.html">MessageBoxButton constants</a> for button combinations displayed. the INFOBOX type is different in that it will ignore the button parameter and use BUTTONS_OK and display a single OK button.</p>
+</div>
+<div class="listingblock">
+<div class="title">Without Extension (begins with an XcomponentContext xContext reference)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XMultiComponentFactory xMCF = xContext.getServiceManager()
+XDesktop xDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", xContext)
+XFrame xFrame = xDesktop.getCurrentFrame()
+Object oToolkit = xMCF.createInstanceWithContext("com.sun.star.awt.Toolkit", xContext)
+XMessageBoxFactory xMessageBoxFactory = UnoRuntime.queryInterface(XMessageBoxFactory.class, oToolkit)
+XWindow xWindow = xFrame.getContainerWindow()
+XWindowPeer xWindowPeer = UnoRuntime.queryInterface(XWindowPeer.class, xWindow)
+
+XMessageBox xMessageBox = xMessageBoxFactory.createMessageBox(xWindowPeer,
+    MessageBoxType.INFOBOX, MessageBoxButtons.BUTTONS_OK,
+    "Window Title", "This in an informative mesage...")
+
+short infoBoxResult = xMessageBox.execute()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The GUNO extension adds two methods to XComponentContext that return a XMessageBox:<br>
+<code>XMessageBox getMessageBox(MessageBoxType type, Integer buttons, String message)</code> that uses a default window title of "soffice" and<br>
+<code>XMessageBox getMessageBox(MessageBoxType type, Integer buttons, String message, String title)</code> that includes a title parameter.</p>
+</div>
+<div class="listingblock">
+<div class="title">With Extension (Info Box example using default title)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">XMessageBox infoBox = xContext.getMessageBox(MessageBoxType.INFOBOX,
+    MessageBoxButtons.BUTTONS_OK, "This in an informative mesage...")
+
+short infoBoxResult = infoBox.execute()</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/infobox.png" alt="infobox">
+</div>
+<div class="title">Figure 1. Info Box</div>
+</div>
+<div class="listingblock">
+<div class="title">With Extension (Warning Box example with title and default okay button and a cancel button)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">String warnMsg = "This is a warning mesage...\nYou should be careful."
+Integer warnButtons = MessageBoxButtons.BUTTONS_OK_CANCEL +  MessageBoxButtons.DEFAULT_BUTTON_OK
+XMessageBox warningBox = xContext.getMessageBox(MessageBoxType.WARNINGBOX,
+    warnButtons, warnMsg, "Warning Title")
+
+short warnBoxResult = warningBox.execute()</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/warningbox.png" alt="warningbox">
+</div>
+<div class="title">Figure 2. Warning Box</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="truegroovy-swingbuilder"><a class="anchor" href="#truegroovy-swingbuilder"></a>Groovy SwingBuilder</h3>
+<div class="paragraph">
+<p>If you&#8217;re a Java developer you&#8217;ve probaly heard of Swing with was Java&#8217;s 2nd generation UI Toolkit. Many developers have ran into threading issues leading to blocked and unresponsive UI&#8217;s if Swing wasn&#8217;t used correctly.</p>
+</div>
+<div class="paragraph">
+<p>Groovy includes many examples of what they call Builders which are examples of a Domain Specific Language (DSL) focused on hierarchal structures. Builders are great for declaring content like HTML, XML, and in this case Swing. An added bonus is it takes care of handling the threading for you.</p>
+</div>
+<div class="paragraph">
+<p>This simple example comes straight from the <a href="http://groovy-lang.org/swing.html">Groovy Swing</a> page. I modified the size dimension of the frame and added the return Integer at the end. Otherwise it runs as a AOO marco.</p>
+</div>
+<div class="listingblock">
+<div class="title">Simple SwingBuilder Example</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="groovy" class="language-groovy hljs">import groovy.swing.SwingBuilder
+import java.awt.BorderLayout as BL
+
+count = 0
+new SwingBuilder().edt {
+  frame(title: 'Frame', size: [150, 80], show: true) {
+    borderLayout()
+    textlabel = label(text: 'Click the button!', constraints: BL.NORTH)
+    button(text:'Click Me',
+         actionPerformed: {count++; textlabel.text = "Clicked ${count} time(s)."; println "clicked"}, constraints:BL.SOUTH)
+  }
+}
+
+// Groovy OpenOffice scripts should always return 0
+return 0</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/swingbuilder-1.png" alt="swingbuilder 1">
+</div>
+<div class="title">Figure 3. After launch</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/swingbuilder-2.png" alt="swingbuilder 2">
+</div>
+<div class="title">Figure 4. After first button click</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-07-04 15:36:34 -0400
+Last updated 2020-07-05 12:04:06 -0400
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

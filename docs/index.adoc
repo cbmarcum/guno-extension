@@ -80,7 +80,7 @@ XIndexAccess xIndexSheets = UnoRuntime.queryInterface(XIndexAccess.class, xSheet
 ----
 
 === Static and Dynamic Types
-While Groovy works great as a dynamic language where we can declare variables with the _def_ keyword, I prefer to declare
+While Groovy works great as a dynamic language where we can declare variables with the `def` keyword, I prefer to declare
 types most of the time. This is only my preference and not a requirement.
 
 === Property Access
@@ -126,7 +126,8 @@ If you start OpenOffice from the command line you can see stdout and stderr mess
 The best way to explain the differences between the Java UNO API's and using Groovy with and without the extension is with some example code. Many of the examples are spreadsheet examples are from SCalc.java that is included with the AOO SDK.
 
 === Import Statement
-To use the UnoExtension you need to add to your imports section
+To use the UnoExtension you need to add to your imports section.
+
 .Add the UnoExtension to imports
 [source, groovy]
 ----
@@ -245,7 +246,7 @@ This first example will ignore that we already have a method to get a sheet by i
 
 Example: Set the active sheet.
 
-.With Extension (begin with an XSpreadsheetDocument `xSpreadsheetDocument` reference)
+.With Extension (begin with an XSpreadsheetDocument xSpreadsheetDocument reference)
 ----
 XSpreadsheets xSheets = xSpreadsheetDocument.sheets
 XIndexAccess xIndexAccess = xSheets.guno(XIndexAccess.class)
@@ -352,7 +353,7 @@ xCell.vertJustify = com.sun.star.table.CellVertJustify.TOP
 ----
 
 === Cell Ranges
-The GUNO Extension adds a method to XSpeadsheet to get the the cell ranges that match certain types.: + 
+The GUNO Extension adds a method to XSpreadsheet to get the the cell ranges that match certain types.: + 
 `XSheetCellRanges getCellRanges(Object type)` where type is one or a combination of  http://www.openoffice.org/api/docs/common/ref/com/sun/star/sheet/CellFlags.html[CellFlag constants] added together.
 
 .Without Extension
@@ -442,3 +443,85 @@ cellList.each() { cell ->
 }
 ----
 
+== Graphical User Interfaces
+=== Message Box
+UNO provides a XMessageBox to display UI messages to the user. There a a number of steps to get from an XComponentContext to displaying a message.
+
+There are standard  https://www.openoffice.org/api/docs/common/ref/com/sun/star/awt/MessageBoxType.html[MessageBoxType enums] used depending on the icon and https://www.openoffice.org/api/docs/common/ref/com/sun/star/awt/MessageBoxButtons.html[MessageBoxButton constants] for button combinations displayed. the INFOBOX type is different in that it will ignore the button parameter and use BUTTONS_OK and display a single OK button.
+
+.Without Extension (begins with an XcomponentContext xContext reference)
+[source,groovy]
+----
+XMultiComponentFactory xMCF = xContext.getServiceManager()
+XDesktop xDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", xContext)
+XFrame xFrame = xDesktop.getCurrentFrame()
+Object oToolkit = xMCF.createInstanceWithContext("com.sun.star.awt.Toolkit", xContext)
+XMessageBoxFactory xMessageBoxFactory = UnoRuntime.queryInterface(XMessageBoxFactory.class, oToolkit)
+XWindow xWindow = xFrame.getContainerWindow()
+XWindowPeer xWindowPeer = UnoRuntime.queryInterface(XWindowPeer.class, xWindow)
+
+XMessageBox xMessageBox = xMessageBoxFactory.createMessageBox(xWindowPeer,
+    MessageBoxType.INFOBOX, MessageBoxButtons.BUTTONS_OK,
+    "Window Title", "This in an informative mesage...")
+
+short infoBoxResult = xMessageBox.execute()
+----
+
+The GUNO extension adds two methods to XComponentContext that return a XMessageBox: + 
+`XMessageBox getMessageBox(MessageBoxType type, Integer buttons, String message)` that uses a default window title of "soffice" and + 
+`XMessageBox getMessageBox(MessageBoxType type, Integer buttons, String message, String title)` that includes a title parameter.
+
+.With Extension (Info Box example using default title)
+[source,groovy]
+----
+XMessageBox infoBox = xContext.getMessageBox(MessageBoxType.INFOBOX, 
+    MessageBoxButtons.BUTTONS_OK, "This in an informative mesage...")
+
+short infoBoxResult = infoBox.execute()
+----
+.Info Box
+image::images/infobox.png[]
+
+.With Extension (Warning Box example with title and default okay button and a cancel button)
+[source,groovy]
+----
+String warnMsg = "This is a warning mesage...\nYou should be careful."
+Integer warnButtons = MessageBoxButtons.BUTTONS_OK_CANCEL +  MessageBoxButtons.DEFAULT_BUTTON_OK
+XMessageBox warningBox = xContext.getMessageBox(MessageBoxType.WARNINGBOX, 
+    warnButtons, warnMsg, "Warning Title")
+    
+short warnBoxResult = warningBox.execute()
+----
+.Warning Box
+image::images/warningbox.png[]
+
+=== Groovy SwingBuilder
+If you're a Java developer you've probaly heard of Swing with was Java's 2nd generation UI Toolkit. Many developers have ran into threading issues leading to blocked and unresponsive UI's if Swing wasn't used correctly.
+
+Groovy includes many examples of what they call Builders which are examples of a Domain Specific Language (DSL) focused on hierarchal structures. Builders are great for declaring content like HTML, XML, and in this case Swing. An added bonus is it takes care of handling the threading for you.
+
+This simple example comes straight from the http://groovy-lang.org/swing.html[Groovy Swing] page. I modified the size dimension of the frame and added the return Integer at the end. Otherwise it runs as a AOO marco.
+
+.Simple SwingBuilder Example
+[source,groovy]
+----
+import groovy.swing.SwingBuilder
+import java.awt.BorderLayout as BL
+
+count = 0
+new SwingBuilder().edt {
+  frame(title: 'Frame', size: [150, 80], show: true) {
+    borderLayout()
+    textlabel = label(text: 'Click the button!', constraints: BL.NORTH)
+    button(text:'Click Me',
+         actionPerformed: {count++; textlabel.text = "Clicked ${count} time(s)."; println "clicked"}, constraints:BL.SOUTH)
+  }
+}
+
+// Groovy OpenOffice scripts should always return 0
+return 0
+----
+.After launch
+image::images/swingbuilder-1.png[] 
+.After first button click
+image::images/swingbuilder-2.png[]
