@@ -498,7 +498,13 @@ image::images/warningbox.png[]
 === Groovy SwingBuilder
 If you're a Java developer you've probaly heard of Swing with was Java's 2nd generation UI Toolkit. Many developers have ran into threading issues leading to blocked and unresponsive UI's if Swing wasn't used correctly.
 
-Groovy includes many examples of what they call Builders which are examples of a Domain Specific Language (DSL) focused on hierarchal structures. Builders are great for declaring content like HTML, XML, and in this case Swing. An added bonus is it takes care of handling the threading for you.
+Groovy includes many examples of the Builder pattern which are examples of a Domain Specific Language (DSL) focused on hierarchal structures. Builders are great for declaring content like HTML, XML, and in this case Swing. An added bonus is it takes care of handling the threading for you.
+
+.Macro Development Tip
+[NOTE]
+====
+The GUNO Extension is not involved in using SwingBuilder with UNO, only Groovy which is included with the OpenOffice-Groovy extension that adds Groovy as a macro language to OpenOffice or using Groovy in a AOO Client application.
+====
 
 This simple example comes straight from the http://groovy-lang.org/swing.html[Groovy Swing] page. I modified the size dimension of the frame and added the return Integer at the end. Otherwise it runs as a AOO marco.
 
