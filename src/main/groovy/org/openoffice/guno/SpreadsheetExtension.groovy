@@ -34,7 +34,6 @@ import com.sun.star.table.*
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
 import com.sun.star.uno.XInterface
-import sun.awt.X11.XModalityProtocol
 
 /**
  *
@@ -42,7 +41,6 @@ import sun.awt.X11.XModalityProtocol
  */
 
 class SpreadsheetExtension {
-
 
     /** Returns the spreadsheet document with the specified component context
      * @param mxRemoteContext the remote context.
@@ -100,9 +98,9 @@ class SpreadsheetExtension {
     static XSpreadsheet getActiveSheet(final XSpreadsheetDocument self) {
         // Collection of sheets
         XSpreadsheets xSheets = self.getSheets()
-        XModel xModel = UnoRuntime.queryInterface(XModel.class, XSpreadsheetDocument)
+        XModel xModel = UnoRuntime.queryInterface(XModel.class, self)
         XController xController = xModel.getCurrentController()
-        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView, xController)
+        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView.class, xController)
         XSpreadsheet result = xSpreadsheetView.getActiveSheet()
         return result
     }
@@ -111,9 +109,9 @@ class SpreadsheetExtension {
      * @param sht The spreadsheet to make active
      */
     static void setActiveSheet(final XSpreadsheetDocument self, XSpreadsheet sht) {
-        XModel xModel = UnoRuntime.queryInterface(XModel.class, XSpreadsheetDocument)
+        XModel xModel = UnoRuntime.queryInterface(XModel.class, self)
         XController xController = xModel.getCurrentController()
-        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView, xController)
+        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView.class, xController)
         xSpreadsheetView.setActiveSheet(sht)
         return
     }

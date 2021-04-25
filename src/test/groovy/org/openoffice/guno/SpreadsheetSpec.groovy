@@ -22,11 +22,16 @@
 
 package org.openoffice.guno
 
+import com.sun.star.container.XIndexAccess
+import com.sun.star.container.XNamed
 import com.sun.star.frame.XComponentLoader
+import com.sun.star.frame.XController
+import com.sun.star.frame.XModel
 import com.sun.star.lang.XComponent
 import com.sun.star.lang.XMultiComponentFactory
 import com.sun.star.sheet.XSpreadsheet
 import com.sun.star.sheet.XSpreadsheetDocument
+import com.sun.star.sheet.XSpreadsheetView
 import com.sun.star.sheet.XSpreadsheets
 import com.sun.star.uno.RuntimeException
 import com.sun.star.uno.UnoRuntime
@@ -48,12 +53,16 @@ Each test will start using the same running office and the office will shutdown 
 @Title("Unit tests for the SpreadsheetExtension")
 class SpreadsheetSpec extends Specification {
 
-    @Shared XComponentContext mxRemoteContext
-    @Shared XMultiComponentFactory mxRemoteServiceManager
-    @Shared XSpreadsheetDocument xSpreadsheetDocument
-    @Shared XComponent xComponent
+    @Shared
+    XComponentContext mxRemoteContext
+    @Shared
+    XMultiComponentFactory mxRemoteServiceManager
+    @Shared
+    XSpreadsheetDocument xSpreadsheetDocument
+    @Shared
+    XComponent xComponent
 
-    
+
     // fixture methods (setup, cleanup, setupSpec, cleanupSpec)
 
     // put our expensive operations here like connections
@@ -69,7 +78,7 @@ class SpreadsheetSpec extends Specification {
 
                 // mxRemoteServiceManager = mxRemoteContext.getServiceManager()
 
-            } catch( Exception e) {
+            } catch (Exception e) {
                 System.err.println("ERROR: can't get a component context from a running office ...")
                 e.printStackTrace()
                 System.exit(1)
@@ -80,7 +89,7 @@ class SpreadsheetSpec extends Specification {
         XComponentLoader aLoader = mxRemoteContext.componentLoader
 
         xComponent = aLoader.loadComponentFromURL(
-                "private:factory/scalc", "_default", 0, new com.sun.star.beans.PropertyValue[0] )
+                "private:factory/scalc", "_default", 0, new com.sun.star.beans.PropertyValue[0])
 
         xSpreadsheetDocument = xComponent.getSpreadsheetDocument(mxRemoteContext)
 
@@ -91,14 +100,14 @@ class SpreadsheetSpec extends Specification {
         // close it all down
         // Check supported functionality of the document (model or controller).
         com.sun.star.frame.XModel xModel = UnoRuntime.queryInterface(
-                        com.sun.star.frame.XModel.class, xSpreadsheetDocument)
+                com.sun.star.frame.XModel.class, xSpreadsheetDocument)
 
         if (xModel != null) {
             // It is a full featured office document.
             // Try to use close mechanism instead of a hard dispose().
             // But maybe such service is not available on this model.
             com.sun.star.util.XCloseable xCloseable = UnoRuntime.queryInterface(
-                            com.sun.star.util.XCloseable.class, xModel)
+                    com.sun.star.util.XCloseable.class, xModel)
 
             if (xCloseable != null) {
                 try {
@@ -127,24 +136,24 @@ class SpreadsheetSpec extends Specification {
         }
     }
 
-    
+
     // feature methods
     def "get sheet by name"() {
 
         given: "add a new spreadsheet MySheet"
         XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
-        xSpreadsheets.insertNewByName("MySheet", (short)0)
-        
+        xSpreadsheets.insertNewByName("MySheet", (short) 0)
+
 
         when: "we request the sheet by name"
         XSpreadsheet xSpreadsheet = xSpreadsheetDocument.getSheetByName("MySheet")
-        
-        then:   "we have a spreadsheet"
+
+        then: "we have a spreadsheet"
         xSpreadsheet != null
 
         cleanup: "remove the spreadsheet"
         xSpreadsheets.removeByName("MySheet")
-        
+
     }
 
     def "get sheet by index"() {
@@ -157,8 +166,71 @@ class SpreadsheetSpec extends Specification {
 
     }
 
+    def "get active sheet"() {
 
-    
+        given: "a spreadsheet document with Sheet2 active"
+        XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
+        XSpreadsheet xSheet2 = null
+        XIndexAccess xSheetsIA = UnoRuntime.queryInterface(XIndexAccess.class, xSpreadsheets)
+        xSheet2 = UnoRuntime.queryInterface(XSpreadsheet.class, xSheetsIA.getByIndex(1))
+
+        XModel xModel = UnoRuntime.queryInterface(XModel.class, xSpreadsheetDocument)
+        XController xController = xModel.getCurrentController()
+        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView, xController)
+        xSpreadsheetView.setActiveSheet(xSheet2)
+
+        when: "we request the active sheet"
+        XSpreadsheet xSheet = xSpreadsheetDocument.getActiveSheet()
+
+        and: "we get it's name"
+        XNamed xNamed = UnoRuntime.queryInterface(XNamed.class, xSheet)
+        String name = xNamed.getName()
+
+        then: "we have a sheet named Sheet2"
+        name == "Sheet2"
+
+        cleanup: "set Sheet1 active"
+        XSpreadsheet xSheet1 = null
+        xSheet1 = UnoRuntime.queryInterface(XSpreadsheet.class, xSheetsIA.getByIndex(0))
+
+    }
+
+    def "set active sheet"() {
+
+        given: "a spreadsheet document with Sheet1 active"
+
+        XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
+        XSpreadsheet xSheet1 = null
+        XIndexAccess xSheetsIA = UnoRuntime.queryInterface(XIndexAccess.class, xSpreadsheets)
+        xSheet1 = UnoRuntime.queryInterface(XSpreadsheet.class, xSheetsIA.getByIndex(0))
+
+        XModel xModel = UnoRuntime.queryInterface(XModel.class, xSpreadsheetDocument)
+        XController xController = xModel.getCurrentController()
+        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView, xController)
+        xSpreadsheetView.setActiveSheet(xSheet1)
+
+        and: "we get a reference to Sheet2 to use it"
+        XSpreadsheet xSheet2 = null
+        xSheet2 = UnoRuntime.queryInterface(XSpreadsheet.class, xSheetsIA.getByIndex(1))
+
+        when: "we set the active sheet to Sheet2"
+        xSpreadsheetDocument.setActiveSheet(xSheet2)
+
+        and: "get the active sheet's name"
+        XSpreadsheet xSheet = null
+        xSheet =  xSpreadsheetView.getActiveSheet()
+        XNamed xNamed = UnoRuntime.queryInterface(XNamed.class, xSheet)
+        String name = xNamed.getName()
+
+        then: "the active sheet is Sheet2"
+        name == "Sheet2"
+
+        cleanup: "set Sheet1 active"
+        xSpreadsheetView.setActiveSheet(xSheet1)
+
+    }
+
+
     // helper methods
 
     @Deprecated
@@ -179,7 +251,7 @@ class SpreadsheetSpec extends Specification {
 
                 mxRemoteServiceManager = mxRemoteContext.getServiceManager()
 
-            } catch( Exception e) {
+            } catch (Exception e) {
                 System.err.println("ERROR: can't get a component context from a running office ...")
                 e.printStackTrace()
                 System.exit(1)
@@ -189,7 +261,7 @@ class SpreadsheetSpec extends Specification {
 
     @Deprecated
     /** Creates an empty spreadsheet document.
-     @return  The XSpreadsheetDocument interface of the document. */
+     @return The XSpreadsheetDocument interface of the document.  */
     XSpreadsheetDocument initDocument()
             throws RuntimeException, Exception {
         XComponentLoader aLoader = UnoRuntime.queryInterface(
@@ -199,10 +271,10 @@ class SpreadsheetSpec extends Specification {
 
         // changed to use class var xComponent
         xComponent = aLoader.loadComponentFromURL(
-                "private:factory/scalc", "_default", 0, new com.sun.star.beans.PropertyValue[0] )
+                "private:factory/scalc", "_default", 0, new com.sun.star.beans.PropertyValue[0])
 
         XSpreadsheetDocument xSpreadsheetDocument = UnoRuntime.queryInterface(
-                XSpreadsheetDocument.class, xComponent )
+                XSpreadsheetDocument.class, xComponent)
 
         return xSpreadsheetDocument
     }
