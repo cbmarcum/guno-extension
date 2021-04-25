@@ -24,6 +24,8 @@ package org.openoffice.guno
 
 import com.sun.star.beans.XPropertySet
 import com.sun.star.container.*
+import com.sun.star.frame.XController
+import com.sun.star.frame.XModel
 import com.sun.star.lang.XComponent
 import com.sun.star.lang.XMultiServiceFactory
 import com.sun.star.sheet.*
@@ -32,6 +34,7 @@ import com.sun.star.table.*
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
 import com.sun.star.uno.XInterface
+import sun.awt.X11.XModalityProtocol
 
 /**
  *
@@ -90,6 +93,29 @@ class SpreadsheetExtension {
 
         return xSpreadsheet
 
+    }
+    /** Returns the active spreadsheet.
+     * @return XSpreadsheet interface of the sheet.
+     */
+    static XSpreadsheet getActiveSheet(final XSpreadsheetDocument self) {
+        // Collection of sheets
+        XSpreadsheets xSheets = self.getSheets()
+        XModel xModel = UnoRuntime.queryInterface(XModel.class, XSpreadsheetDocument)
+        XController xController = xModel.getCurrentController()
+        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView, xController)
+        XSpreadsheet result = xSpreadsheetView.getActiveSheet()
+        return result
+    }
+
+    /** Sets the active spreadsheet
+     * @param sht The spreadsheet to make active
+     */
+    static void setActiveSheet(final XSpreadsheetDocument self, XSpreadsheet sht) {
+        XModel xModel = UnoRuntime.queryInterface(XModel.class, XSpreadsheetDocument)
+        XController xController = xModel.getCurrentController()
+        XSpreadsheetView xSpreadsheetView = UnoRuntime.queryInterface(XSpreadsheetView, xController)
+        xSpreadsheetView.setActiveSheet(sht)
+        return
     }
 
     /** Returns a sheet cell range container.
