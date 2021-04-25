@@ -41,7 +41,7 @@ import com.sun.star.uno.XInterface
 class SpreadsheetExtension {
 
 
-    /** Returns the spreadsheet document with the specified index component context
+    /** Returns the spreadsheet document with the specified component context
      * @param mxRemoteContext the remote context.
      * @return XSpreadsheetDocument interface of the spreadsheet document.
      */
@@ -128,7 +128,7 @@ class SpreadsheetExtension {
             // get the property set
             Object oCS = xCS.getByName(cellStyle)
 
-            XPropertySet result = UnoRuntime.queryInterface(XPropertySet.class, oCS);
+            XPropertySet result = UnoRuntime.queryInterface(XPropertySet.class, oCS)
             return result
 
         } else {
@@ -168,7 +168,7 @@ class SpreadsheetExtension {
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the string value to insert.
-     * @deprecated As of release 4.1.6.1, replaced by {@link #setFormulaOfCell(final XCellRange self, int column, int row)}
+     * @deprecated As of release 4.1.6.1, replaced by {@link #setFormulaOfCell(final XCellRange self, int column, int row, String value)}
      */
     @Deprecated
     static void insertFormulaIntoCell(final XSpreadsheet self, int column, int row, String value) {
@@ -183,7 +183,7 @@ class SpreadsheetExtension {
      * @param column zero based column position.
      * @param row zero based row position.
      * @param value the float value to insert.
-     * @deprecated As of release 4.1.6.1, replaced by {@link #setValueOfCell(final XCellRange self, int column, int row)}
+     * @deprecated As of release 4.1.6.1, replaced by {@link #setValueOfCell(final XCellRange self, int column, int row, float value)}
      */
     @Deprecated
     static void insertValueIntoCell(final XSpreadsheet self, int column, int row, float value) {

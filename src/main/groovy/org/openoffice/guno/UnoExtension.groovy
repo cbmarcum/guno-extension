@@ -66,7 +66,8 @@ class UnoExtension {
     static XMessageBox getMessageBox(final XComponentContext self, MessageBoxType type, Integer buttons, String message) {
 
         XMultiComponentFactory xMCF = self.getServiceManager()
-        XDesktop xDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", self)
+        Object oDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", self)
+        XDesktop xDesktop = UnoRuntime.queryInterface(XDesktop.class, oDesktop)
         XFrame xFrame = xDesktop.getCurrentFrame()
         Object oToolkit = xMCF.createInstanceWithContext("com.sun.star.awt.Toolkit", self)
         XMessageBoxFactory xMessageBoxFactory = UnoRuntime.queryInterface(XMessageBoxFactory.class, oToolkit)
@@ -93,7 +94,8 @@ class UnoExtension {
     static XMessageBox getMessageBox(final XComponentContext self, MessageBoxType type, Integer buttons, String message, String title) {
 
         XMultiComponentFactory xMCF = self.getServiceManager()
-        XDesktop xDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", self)
+        Object oDesktop = xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", self)
+        XDesktop xDesktop = UnoRuntime.queryInterface(XDesktop.class, oDesktop)
         XFrame xFrame = xDesktop.getCurrentFrame()
         Object oToolkit = xMCF.createInstanceWithContext("com.sun.star.awt.Toolkit", self)
         XMessageBoxFactory xMessageBoxFactory = UnoRuntime.queryInterface(XMessageBoxFactory.class, oToolkit)
