@@ -58,7 +58,7 @@ dependencies {
 
     testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-3.0'
 
-    // this and slf4j for dpock-reports
+    // this and slf4j for spock-reports
     // you can use testRuntimeClasspath if you don't want to use spock-report-specific features in your Specs
     testRuntimeClasspath( 'com.athaydes:spock-reports:2.0.1-RC3' ) { // was testImplementation
         transitive = false // this avoids affecting your version of Groovy/Spock
