@@ -22,6 +22,9 @@
 
 package org.openoffice.guno
 
+import com.sun.star.awt.MessageBoxButtons
+import com.sun.star.awt.MessageBoxType
+import com.sun.star.awt.XMessageBox
 import com.sun.star.beans.XPropertySet
 import com.sun.star.container.XNameAccess
 import com.sun.star.container.XNameContainer
@@ -38,6 +41,7 @@ import com.sun.star.table.CellHoriJustify
 import com.sun.star.table.CellVertJustify
 import com.sun.star.table.XCell
 import com.sun.star.text.XText
+import com.sun.star.uno.RuntimeException
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
 import com.sun.star.uno.XInterface
@@ -300,6 +304,42 @@ class UnoSpec extends Specification {
 
         cleanup: "remove the spreadsheet"
         xSpreadsheets.removeByName("MySheet")
+    }
+
+    def "create a simple message box"() {
+
+        given: "a component context from setup"
+
+        when: "we create a simple message box"
+        XMessageBox infoBox = mxRemoteContext.getMessageBox(MessageBoxType.INFOBOX,
+                MessageBoxButtons.BUTTONS_OK, "This in an informative message...")
+
+        then: "the caption and message are correct"
+        infoBox.captionText == "soffice"
+        infoBox.messageText == "This in an informative message..."
+
+        cleanup: "null the message box"
+        infoBox = null
+
+    }
+
+    def "create a warning message box"() {
+
+        given: "a component context from setup"
+
+        when: "we create a warning message box"
+        String warnMsg = "This is a warning message...\nYou should be careful."
+        Integer warnButtons = MessageBoxButtons.BUTTONS_OK_CANCEL +  MessageBoxButtons.DEFAULT_BUTTON_OK
+        XMessageBox warningBox = mxRemoteContext.getMessageBox(MessageBoxType.WARNINGBOX,
+                warnButtons, warnMsg, "Warning Title")
+
+        then: "the caption and message are correct"
+        warningBox.captionText == "Warning Title"
+        warningBox.messageText == "This is a warning message...\nYou should be careful."
+
+        cleanup: "null the message box"
+        warningBox = null
+
     }
 
 }
