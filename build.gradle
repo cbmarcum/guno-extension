@@ -43,7 +43,7 @@ repositories {
 }
 
 group 'net.codebuilders'
-version "4.1.6.13" // based on AOO version and patch number
+version "4.1.6.14" // based on AOO version and patch number
 description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
 mainClassName = 'org.openoffice.FakeClassName'
 
@@ -56,7 +56,7 @@ dependencies {
     compileOnly "net.codebuilders:unoil:4.1.6"
     compileOnly "net.codebuilders:jurt:4.1.6"
 
-    testImplementation 'org.spockframework:spock-core:2.0-M2-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-3.0'
 
     // testImplementation 'net.codebuilders:bootstrapconnector:0.1.0'
     testImplementation 'net.codebuilders:bootstrap-connector:4.1.6.0'
@@ -73,8 +73,8 @@ groovydoc {
 // jar.baseName = 'guno-extension'
 archivesBaseName = 'guno-extension'
 
-// sourceCompatibility = 1.6
-// targetCompatibility = 1.6
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 
 java {
@@ -197,4 +197,12 @@ artifacts {
     archives sourcesJar
     // archives groovydocJar
     archives javadocJar
+}
+
+// spock tests not ran without this block
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
