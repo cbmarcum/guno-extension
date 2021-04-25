@@ -44,14 +44,19 @@ import com.sun.star.uno.XInterface
 import com.sun.star.util.CloseVetoException
 import com.sun.star.util.XCloseable
 import ooo.connector.BootstrapSocketConnector
+import spock.lang.Narrative
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Title
 
 /**
  *
  * @author Carl Marcum - CodeBuilders.net
  */
 
+@Narrative("""General tests for the UnoExtension. 
+Each test will start using the same running office and the office will shutdown afterward.""")
+@Title("Unit tests for the UnoExtension")
 class UnoSpec extends Specification {
 
     @Shared
@@ -137,7 +142,7 @@ class UnoSpec extends Specification {
     // feature methods
 
     def "use guno method in spreadsheet"() {
-        setup:
+        given: "a new spreadsheet MySheet and a cell"
         XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
         xSpreadsheets.insertNewByName("MySheet", (short) 0)
         XSpreadsheet xSpreadsheet = xSpreadsheetDocument.getSheetByName("MySheet")
@@ -148,19 +153,19 @@ class UnoSpec extends Specification {
         xCell = xSpreadsheet.getCellByPosition(0, 3)
 
 
-        when:
+        when: "we get the cell text using the guno method"
         XText xCellText = xCell.guno(XText.class)
 
-        then:
+        then: "the text is not null"
         xCellText != null
 
-        cleanup:
+        cleanup: "remove the spreadsheet"
         xSpreadsheets.removeByName("MySheet")
 
     }
 
     def "get at cellstyle prop"() {
-        setup:
+        given: "a spreadsheet with a style"
         XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
         xSpreadsheets.insertNewByName("MySheet", (short) 0)
         XSpreadsheet xSpreadsheet = xSpreadsheetDocument.getSheetByName("MySheet")
@@ -204,7 +209,7 @@ class UnoSpec extends Specification {
         oCPS1.setPropertyValue("HoriJustify", CellHoriJustify.CENTER)
         oCPS1.setPropertyValue("ParaIndent", 200)
 
-        when:
+        when: "we request the properties using getAt"
         boolean isCellBackgroundTransparent = oCPS1.getAt("IsCellBackgroundTransparent")
         int cellBackColor = oCPS1.getAt("CellBackColor")
         int charColor = oCPS1.getAt("CharColor")
@@ -214,7 +219,7 @@ class UnoSpec extends Specification {
         CellHoriJustify horiJustify = oCPS1.getAt("HoriJustify")
         int paraIndent = oCPS1.getAt("ParaIndent")
 
-        then:
+        then: "we have the correct values"
         isCellBackgroundTransparent == false
         cellBackColor == 6710932
         charColor == 16777215
@@ -224,12 +229,12 @@ class UnoSpec extends Specification {
         horiJustify == CellHoriJustify.CENTER
         // paraIndent == 200 // 0 for some reason
 
-        cleanup:
+        cleanup: "remove the spreadsheet"
         xSpreadsheets.removeByName("MySheet")
     }
 
     def "put at cellstyle prop"() {
-        setup:
+        given: "a spreadsheet with a new cell style"
         XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
         xSpreadsheets.insertNewByName("MySheet", (short) 0)
         XSpreadsheet xSpreadsheet = xSpreadsheetDocument.getSheetByName("MySheet")
@@ -263,7 +268,7 @@ class UnoSpec extends Specification {
         // get the property set
         XPropertySet oCPS1 = UnoRuntime.queryInterface(XPropertySet.class, oInt1);
 
-        when:
+        when: "we set properties using putAt"
         // set properties
         oCPS1.putAt("IsCellBackgroundTransparent", false)
         oCPS1.putAt("CellBackColor", 6710932) // 6710932
@@ -283,7 +288,7 @@ class UnoSpec extends Specification {
         CellHoriJustify horiJustify = oCPS1.getPropertyValue("HoriJustify")
         int paraIndent = oCPS1.getPropertyValue("ParaIndent")
 
-        then:
+        then: "we have the correct values"
         isCellBackgroundTransparent == false
         cellBackColor == 6710932
         charColor == 16777215
@@ -293,7 +298,7 @@ class UnoSpec extends Specification {
         horiJustify == CellHoriJustify.CENTER
         // paraIndent == 200 // 0 for some reason
 
-        cleanup:
+        cleanup: "remove the spreadsheet"
         xSpreadsheets.removeByName("MySheet")
     }
 

@@ -58,7 +58,14 @@ dependencies {
 
     testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-3.0'
 
-    // testImplementation 'net.codebuilders:bootstrapconnector:0.1.0'
+    // you can use testRuntimeClasspath if you don't want to use spock-report-specific features in your Specs
+    testRuntimeClasspath( 'com.athaydes:spock-reports:2.0.1-RC3' ) { // was testImplementation
+        transitive = false // this avoids affecting your version of Groovy/Spock
+    }
+    // if you don't already have slf4j-api and an implementation of it in the classpath, add this!
+    testImplementation 'org.slf4j:slf4j-api:1.7.30'
+    testCompile 'org.slf4j:slf4j-simple:1.7.30'
+
     testImplementation 'net.codebuilders:bootstrap-connector:4.1.6.0'
 }
 

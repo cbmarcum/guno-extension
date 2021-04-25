@@ -31,16 +31,21 @@ import com.sun.star.sheet.XSpreadsheets
 import com.sun.star.uno.RuntimeException
 import com.sun.star.uno.UnoRuntime
 import com.sun.star.uno.XComponentContext
+import spock.lang.Narrative
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Title
 
 import ooo.connector.BootstrapSocketConnector
+
 
 /**
  *
  * @author Carl Marcum - CodeBuilders.net
  */
-
+@Narrative(""" Spreadsheet specific tests for the SpreadsheetExtension.
+Each test will start using the same running office and the office will shutdown afterward. """)
+@Title("Unit tests for the SpreadsheetExtension")
 class SpreadsheetSpec extends Specification {
 
     @Shared XComponentContext mxRemoteContext
@@ -126,28 +131,28 @@ class SpreadsheetSpec extends Specification {
     // feature methods
     def "get sheet by name"() {
 
-        setup:
+        given: "add a new spreadsheet MySheet"
         XSpreadsheets xSpreadsheets = xSpreadsheetDocument.getSheets()
         xSpreadsheets.insertNewByName("MySheet", (short)0)
         
 
-        when:   // stimulus
+        when: "we request the sheet by name"
         XSpreadsheet xSpreadsheet = xSpreadsheetDocument.getSheetByName("MySheet")
         
-        then:   // response
+        then:   "we have a spreadsheet"
         xSpreadsheet != null
 
-        cleanup:
+        cleanup: "remove the spreadsheet"
         xSpreadsheets.removeByName("MySheet")
         
     }
 
     def "get sheet by index"() {
 
-        when:   // stimulus
+        when: "we request spreadsheet by index 1"
         XSpreadsheet xSpreadsheet = xSpreadsheetDocument.getSheetByIndex(1)
 
-        then:   // response
+        then: "we have a spreadsheet"
         xSpreadsheet != null
 
     }
