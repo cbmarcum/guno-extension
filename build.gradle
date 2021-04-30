@@ -21,10 +21,17 @@
  *************************************************************/
 
 /* build with:
-* ./gradlew publish
+* ./gradlew publish (this pushed to nexus staging repo also)
+* nexus-plugin docs say to use:
+* ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 * or:
+* ./gradlew publishToSonatype closeSonatypeStagingRepository
+* or to publish locally
 * ./gradlew publishToMavenLocal
- */
+*
+* to update this wrapper version
+* $ gradle wrapper --gradle-version 6.7 --distribution-type all
+*/
 
 plugins {
     id 'groovy'
@@ -33,6 +40,7 @@ plugins {
     id 'maven-publish'
     // https://docs.gradle.org/current/userguide/signing_plugin.html
     id 'signing'
+    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
 }
 
 repositories {
@@ -43,7 +51,7 @@ repositories {
 }
 
 group 'net.codebuilders'
-version "4.1.6.14" // based on AOO version and patch number
+version "4.1.6.15" // based on AOO version and patch number
 description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
 mainClassName = 'org.openoffice.FakeClassName'
 
@@ -163,6 +171,21 @@ signing {
     required { isReleaseVersion }
     sign publishing.publications.mavenJava
     sign configurations.archives
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
+            def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
+            def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
+            // nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
+            // snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            username = ossUser
+            password = ossPass
+            stagingProfileId = ossStagingProfileId
+        }
+    }
 }
 
 // MAY WANT THIS WITH GROOVYDOC ??
