@@ -51,14 +51,14 @@ repositories {
 }
 
 group 'net.codebuilders'
-version "4.1.6.15" // based on AOO version and patch number
+version "4.1.6.16" // based on AOO version and patch number
 description 'Groovy UNO Extension extends the Apache OpenOffice UNO API'
 mainClassName = 'org.openoffice.FakeClassName'
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT") // used to not pgp sign snapshots
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:3.0.4'
+    compileOnly 'org.codehaus.groovy:groovy-all:3.0.8'
     compileOnly "net.codebuilders:juh:4.1.6"
     compileOnly "net.codebuilders:ridl:4.1.6"
     compileOnly "net.codebuilders:unoil:4.1.6"
